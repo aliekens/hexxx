@@ -62,10 +62,10 @@ static volatile uint32_t piBusAddr = 0x40000000;
 #define SYST_CLO 1
 #define SYST_CHI 2
 
-static volatile uint32_t  *gpioReg = (uint32_t)0;
-static volatile uint32_t  *systReg = (uint32_t)0;
-// TODO static volatile uint32_t  *gpioReg = MAP_FAILED;
-// TODO static volatile uint32_t  *systReg = MAP_FAILED;
+//static volatile uint32_t  *gpioReg = (uint32_t)0;
+//static volatile uint32_t  *systReg = (uint32_t)0;
+static volatile uint32_t  *gpioReg = MAP_FAILED;
+static volatile uint32_t  *systReg = MAP_FAILED;
 
 #define PI_BANK (gpio>>5)
 #define PI_BIT  (1<<(gpio&0x1F))

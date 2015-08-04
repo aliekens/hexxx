@@ -128,8 +128,7 @@ static uint32_t * initMapMem(int fd, uint32_t addr, uint32_t len)
 {
     return (uint32_t *) mmap(0, len,
        PROT_READ|PROT_WRITE|PROT_EXEC,
-// TODO       MAP_SHARED|MAP_LOCKED,
-       MAP_SHARED|0,
+       MAP_SHARED|MAP_LOCKED,
        fd, addr);
 }
 
