@@ -1,14 +1,14 @@
-hexxx: main.o
-	g++ -o hexxx main.o ws2811/libws2811.a -O2
+hexxx: main.o ledstring.o 
+	g++ -o hexxx main.o ledstring.o ws2811/libws2811.a -O2
 
 main.o: main.cpp
-	g++ -o main.o -c -g -O2 main.cpp
+	g++ -Iws2811 -o main.o -c -g -O2 main.cpp
 
 %.o: %.c %.h 
 	gcc -o $@ -c -g -O2 $<
 
 %.o: %.cpp %.h 
-	g++ -o $@ -c -g -O2 $<
+	g++ -std=c++0x -o $@ -c -g -O2 $<
 
 clean:
 	@rm -vf *.o *.a hexxx
