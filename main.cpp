@@ -9,13 +9,14 @@
 #include <sys/mman.h>
 #include <signal.h>
 
-#include "ledstring.h"
-
-#include "board_info.h"
-#include "clk.h"
-#include "gpio.h"
-#include "pwm.h"
-#include "ws2811.h"
+extern "C" {
+  #include "ledstring.h"
+  #include "board_info.h"
+  #include "clk.h"
+  #include "gpio.h"
+  #include "pwm.h"
+  #include "ws2811.h"
+}
 
 #define ARRAY_SIZE(stuff)                        (sizeof(stuff) / sizeof(stuff[0]))
 

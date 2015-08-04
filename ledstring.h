@@ -9,10 +9,10 @@
 #include <sys/mman.h>
 #include <signal.h>
 
-#include "ws2811/ws2811.h"
-
 #ifndef LEDSTRING__H
 #define LEDSTRING__H
+
+#include "ws2811/ws2811.h"
 
 #define TARGET_FREQ                              WS2811_TARGET_FREQ
 #define GPIO_PIN                                 18
