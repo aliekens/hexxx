@@ -2,6 +2,13 @@
 
 #include <iostream>
 
+bool button_state[ 6 ] = { 0, 0, 0, 0, 0, 0 };
+bool button_rising[ 6 ] = { 0, 0, 0, 0, 0, 0 };
+bool button_falling[ 6 ] = { 0, 0, 0, 0, 0, 0 };
+bool button_pushed[ 6 ] = { 0, 0, 0, 0, 0, 0 };
+bool button_released[ 6 ] = { 0, 0, 0, 0, 0, 0 };
+
+
 bool set_button_state( int button, bool value ) {
   // HEXXX uses pull-up, so button pushes are inverted
   value = !value;

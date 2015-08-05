@@ -2,11 +2,11 @@
 #define BUTTONS__H
 
 // persist the last known state of the buttons
-volatile extern bool button_state[ 6 ];
-volatile extern bool button_rising[ 6 ];
-volatile extern bool button_falling[ 6 ];
-volatile extern bool button_pushed[ 6 ];
-volatile extern bool button_released[ 6 ];
+extern bool button_state[ 6 ];
+extern bool button_rising[ 6 ];
+extern bool button_falling[ 6 ];
+extern bool button_pushed[ 6 ];
+extern bool button_released[ 6 ];
 
 bool set_button_state( int button, bool value );
 
