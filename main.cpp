@@ -87,7 +87,7 @@ void play_tron(void) {
   while( ( alive[ 0 ] && alive[ 1 ] ) || ( alive[ 1 ] && alive[ 2 ] ) || ( alive[ 0 ] && alive[ 2 ] ) ) { // play as long as 2 players are alive
   
     // fade out player tails
-    for( int i = 0; i < LED_COUNT; i++ ) {
+    for( int i = 0; i < LED_COUNT - 3; i++ ) {
       setColor( i, darkenColor( getColor( i ) ) );
     }
   
@@ -134,11 +134,12 @@ void play_tron(void) {
   
     // render players on new positions
     for( int player = 0; player < PLAYERS; player++ ) {
-      setColor( position[ player ], colors[ player ] );
+      if( alive[ player ] )
+        setColor( position[ player ], colors[ player ] );
     }
     
     usleep( sleep );
-    sleep *= 0.98;
+    sleep *= 0.99;
   
   }
   
@@ -185,10 +186,10 @@ void announce_winner() {
     }
   }
   for( int i = 0; i < 3; i++ ) {
+    usleep(250000);
     fillborder( color );
     usleep(500000);
     fillborder( 0 );
-    usleep(500000);
   }
 }
 
