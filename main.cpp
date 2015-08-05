@@ -97,7 +97,7 @@ void button_thread() {
   }
 }
 
-// #define SHOW_FPS
+#define SHOW_FPS
 void render_thread() {
   
   #ifdef SHOW_FPS
@@ -118,6 +118,7 @@ void render_thread() {
           framecount = 0;
         }
       #endif
+      usleep(36000); // slow down to about 24FPS on a raspberry pi 2
   }
 }
 
