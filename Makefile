@@ -1,5 +1,5 @@
 hexxx: main.o ledstring.o color.o
-	gcc -o hexxx main.o ledstring.o color.o ws2811/libws2811.a -O2
+	g++ -o hexxx main.o ledstring.o color.o ws2811/libws2811.a gpio/gpio.a -O2
 
 main.o: main.cpp
 	g++ -Iws2811 -o main.o -c -g -O2 main.cpp
