@@ -71,13 +71,22 @@ int direction[PLAYERS];
 ws2811_led_t colors[PLAYERS];
 
 void setup_tron(void) {
-  for( int i = 0; i < PLAYERS; i++ ) {
-    position[ i ] = 0;
-    direction[ i ] = i * 2;
-  }
   colors[ 0 ] = color( 255, 255, 0 );
   colors[ 1 ] = color( 0, 255, 255 );
   colors[ 2 ] = color( 255, 0, 255 );
+  int r = rand() % 2;
+  position[ 0 ] = 335 + r;
+  direction[ 0 ] = 2 - r;
+  position[ 1 ] = 335 + 44 + r;
+  direction[ 1 ] = ( 6 - r ) % 6;
+  position[ 2 ] = 335 + 22 + r;
+  direction[ 2 ] = 4 - r;
+}
+
+void darkenhexagon() {
+  for( int i = 0; i < LED_COUNT - 3; i++ ) {
+    setColor( i, darkenColor( getColor( i ) ) );
+  }
 }
 
 void play_tron(void) {
@@ -87,9 +96,7 @@ void play_tron(void) {
   while( ( alive[ 0 ] && alive[ 1 ] ) || ( alive[ 1 ] && alive[ 2 ] ) || ( alive[ 0 ] && alive[ 2 ] ) ) { // play as long as 2 players are alive
   
     // fade out player tails
-    for( int i = 0; i < LED_COUNT - 3; i++ ) {
-      setColor( i, darkenColor( getColor( i ) ) );
-    }
+    darkenhexagon();
   
     // update players
     for( int player = 0; player < PLAYERS; player++ ) {
@@ -156,7 +163,7 @@ void invite_players() {
   }
 
   int counter = 0;
-  while( ( ( humanplayer[ 0 ] || humanplayer[ 1 ] || humanplayer[ 2 ] ) == false ) || ( counter < 5 ) ) { // wait a bit for players to join
+  while( ( ( humanplayer[ 0 ] || humanplayer[ 1 ] || humanplayer[ 2 ] ) == false ) || ( counter < 100 ) ) { // wait a bit for players to join
     counter++;
     
     for( int player = 0; player < PLAYERS; player++ ) { // check whether player pressed buttons
@@ -169,8 +176,15 @@ void invite_players() {
     }
     
     reset_button_states();
+    
+    darkenhexagon();
+    if( counter > 100 )
+      counter = 100;
+    for( int i = 0; i < ( 100 - counter ) / 10 + 1; i++ ) {
+      setColor( rand() % 397, color( 127 + ( rand() % 2 ) * 127 , 127 + ( rand() % 2 ) * 127 , 127 + ( rand() % 2 ) * 127 ) );
+    }
 
-    usleep( 200000 );
+    usleep( 20000 );
   }
   
   fillhexagon( 0 );
@@ -179,18 +193,23 @@ void invite_players() {
 }
 
 void announce_winner() {
-  ws2811_led_t color = 0xffffff;
+  ws2811_led_t c = 0xffffff;
   for( int player = 0; player < 3; player++ ) {
     if( alive[ player ] ) {
-      color = colors[ player ];
+      c = colors[ player ];
     }
   }
-  for( int i = 0; i < 3; i++ ) {
-    usleep(250000);
-    fillborder( color );
-    usleep(500000);
-    fillborder( 0 );
+  for( int flash = 0; flash < 5; flash++ ) {
+    for( int i = 0; i < 16; i++ ) {
+      fillborder( color( i * getRed(c) / 16, i * getGreen(c) / 16, i * getBlue(c) / 16 ) );
+      usleep(5000);
+    }
+    for( int i = 16; i > 0; i-- ) {
+      fillborder( color( i * getRed(c) / 16, i * getGreen(c) / 16, i * getBlue(c) / 16 ) );
+      usleep(5000);
+    }
   }
+  fillborder( 0 );
 }
 
 void logic_thread() {
@@ -254,6 +273,9 @@ static void setup_handlers(void) {
 }
 
 int main(int argc, char *argv[]) {
+  
+  int seed = time(NULL);
+  srand(seed);
   
   int ret = 0;
 
