@@ -36,21 +36,11 @@ ws2811_led_t getColor( int position ) {
   return ledstring.channel[0].leds[position];
 }
 
-void render_hexagons(void)
-{
-  ws2811_led_t c = 0;
-  for (int i = 0; i < LED_COUNT; i++) {
-      setColor( i, c );
-      if( rand() % 10 == 0 ) {
-        c = color( rand() % 256, rand() % 256, rand() % 256 );
-      }
-  }
-}
-
-#define SNAKES 100
+#define SNAKES 32
 int positions[SNAKES];
 int directions[SNAKES];
 ws2811_led_t colors[SNAKES];
+
 void setup_snake(void) {
   for( int i = 0; i < SNAKES; i++ ) {
     positions[ i ] = rand() % LED_COUNT;
@@ -66,7 +56,7 @@ void render_snake(void) {
   for( int snake = 0; snake < SNAKES; snake++ ) {
     setColor( positions[ snake ], colors[ snake ] );
     positions[ snake ] = neighbors[ positions[ snake ] ][ directions[ snake ] ];
-    if( rand() % 5 == 0 ) {
+    if( ( rand() % 10 == 0 ) || ( positions[ snake ] == neighbors[ positions[ snake ] ][ directions[ snake ] ] ) ){
       if( rand() % 2 )
         directions[ snake ] = ( directions[ snake ] + 1 ) % 6;
       else
