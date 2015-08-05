@@ -1,20 +1,23 @@
 #include "color.h"
+#include <stdlib.h>
 
 ws2811_led_t color( uint8_t red, uint8_t green, uint8_t blue ) {
   return ( (uint32_t)green << 16 ) | ( (uint32_t)red << 8 ) | ( (uint32_t)blue );
 }
 
 uint8_t getRed( ws2811_led_t color ) {
-  return uint8_t( ( color << 8 ) >> 8 );
+  return (uint8_t)( ( color & 0x00ff00 ) >> 8 );
 }
 
 uint8_t getGreen( ws2811_led_t color ) {
-  return uint8_t( color >> 16 );
+  return (uint8_t)( ( color & 0xff0000 ) >> 16 );
 }
 
 uint8_t getBlue( ws2811_led_t color ) {
-  return uint8_t( color );
+  return (uint8_t)( ( color & 0x0000ff ) >> 0 );
 }
+
+// GAMMA CORRECTION
 
 uint8_t gammaCorrection[ 256 ] = {
   0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 
@@ -34,7 +37,6 @@ uint8_t gammaCorrection[ 256 ] = {
   88, 89, 90, 91, 92, 93, 95, 96, 97, 99, 100, 102, 103, 105, 107, 108, 
   110, 112, 114, 117, 119, 122, 124, 127, 131, 135, 139, 144, 150, 158, 171, 255
 };
-// GAMMA CORRECTION
 
 uint8_t applyGammaCorrection( uint8_t input ) {
   return gammaCorrection[ input ];
@@ -54,4 +56,12 @@ ws2811_led_t applyGammaCorrection( uint8_t red, uint8_t green, uint8_t blue ) {
     applyGammaCorrection( green ), 
     applyGammaCorrection( blue ) 
   );
+}
+
+ws2811_led_t darkenColor( ws2811_led_t c ) {
+  return color( getRed( c ) / 20 * 19, getGreen( c ) / 20 * 19, getBlue( c ) / 20 * 19 );
+}
+
+ws2811_led_t randomColor( int brightness ) {
+  return color( rand() % brightness, rand() % brightness, rand() % brightness );
 }
