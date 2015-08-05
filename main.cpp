@@ -10,6 +10,7 @@
 #include <signal.h>
 
 #include <iostream>
+#include <thread>
 
 extern "C" {
   #include "ledstring.h"
@@ -81,6 +82,40 @@ static void setup_handlers(void) {
   sigaction(SIGKILL, &sa, NULL);
 }
 
+void button_thread() {
+  while (1) {
+
+      std::cout 
+        << gpioRead( BUTTON_0_LEFT ) 
+        << gpioRead( BUTTON_0_RIGHT ) 
+        << gpioRead( BUTTON_1_LEFT ) 
+        << gpioRead( BUTTON_1_RIGHT ) 
+        << gpioRead( BUTTON_2_LEFT ) 
+        << gpioRead( BUTTON_2_RIGHT ) 
+        << std::endl;
+
+      // 15 frames /sec
+      usleep(50000);
+  }
+}
+
+void render_thread() {
+  while (1) {
+      ws2811_render(&ledstring);
+
+      // 15 frames /sec
+      usleep(50000);
+  }
+}
+
+void logic_thread() {
+  setup_snake();
+  while (1) {
+      render_snake();
+      usleep(50000);
+  }
+}
+
 int main(int argc, char *argv[]) {
   
   int ret = 0;
@@ -100,29 +135,14 @@ int main(int argc, char *argv[]) {
   gpioSetMode( BUTTON_2_LEFT, PI_INPUT );
   gpioSetMode( BUTTON_2_RIGHT, PI_INPUT );
 
-  setup_snake();
-  while (1) {
-      render_snake();
-
-      if (ws2811_render(&ledstring))
-      {
-          ret = -1;
-          break;
-      }
-      
-      std::cout 
-        << gpioRead( BUTTON_0_LEFT ) 
-        << gpioRead( BUTTON_0_RIGHT ) 
-        << gpioRead( BUTTON_1_LEFT ) 
-        << gpioRead( BUTTON_1_RIGHT ) 
-        << gpioRead( BUTTON_2_LEFT ) 
-        << gpioRead( BUTTON_2_RIGHT ) 
-        << std::endl;
-
-      // 15 frames /sec
-      usleep(50000);
-  }
-
+  std::thread t1(button_thread);
+  std::thread t2(render_thread);
+  std::thread t3(logic_thread);
+  
+  t1.join();
+  t2.join();
+  t3.join();
+  
   ws2811_fini(&ledstring);
 
   return ret;
