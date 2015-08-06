@@ -1,5 +1,5 @@
 // Example HEXXX application that shows random walking on the hexagon and button presses
-// Note that button pressing and rendering is handled by separate threads and do not need to be called
+// Note that checking for button states (rising, falling, pushing, releasing) and copying the pixel buffer to the actual screen is handled by separate threads and do not need to be explicitly called
 
 #include "hexxx.h"
 
