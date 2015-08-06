@@ -62,9 +62,9 @@ ws2811_led_t darkenColor( ws2811_led_t c ) {
   uint8_t red = 4 * (uint32_t)getRed( c ) / 5;
   uint8_t green = 4 * (uint32_t)getGreen( c ) / 5;
   uint8_t blue = 4 * (uint32_t)getBlue( c ) / 5;
-  if( red < 15 ) red = 0;
-  if( green < 15 ) green = 0;
-  if( blue < 15 ) blue = 0;
+  if( red <= 35 ) red = 0;
+  if( green <= 35 ) green = 0;
+  if( blue <= 35 ) blue = 0;
   return color( red, green, blue );
 }
 

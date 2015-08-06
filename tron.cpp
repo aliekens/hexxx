@@ -62,11 +62,13 @@ void play_tron(void) {
         }
 
         int next_position = neighbors[ position[ player ] ][ direction[ player ] ];
-        if( getColor( next_position ) == 0 )
+        ws2811_led_t next_position_color = getColor( next_position );
+        if( ( getRed( next_position_color ) < 50 ) &&  ( getGreen( next_position_color ) < 50 ) && ( getBlue( next_position_color ) < 50 ) )
           position[ player ] = neighbors[ position[ player ] ][ direction[ player ] ];
         else {
           alive[ player ] = false;
           setColor( playerLEDs[ player ], 0 );
+          setColor( position[ player ], 0xffffff );
         }
         
       }
@@ -76,14 +78,17 @@ void play_tron(void) {
     if( position[ 0 ] == position[ 1 ] ) {
       alive[ 0 ] = false;
       alive[ 1 ] = false;
+      setColor( position[ 0 ], 0xffffff );
     }
     if( position[ 1 ] == position[ 2 ] ) {
       alive[ 1 ] = false;
       alive[ 2 ] = false;
+      setColor( position[ 1 ], 0xffffff );
     }
     if( position[ 0 ] == position[ 2 ] ) {
       alive[ 0 ] = false;
       alive[ 2 ] = false;
+      setColor( position[ 2 ], 0xffffff );
     }
     
     print_button_states();
@@ -93,6 +98,8 @@ void play_tron(void) {
     for( int player = 0; player < PLAYERS; player++ ) {
       if( alive[ player ] )
         setColor( position[ player ], colors[ player ] );
+      else
+        setColor( position[ player ], 0xffffff );
     }
     
     usleep( sleep );
@@ -109,11 +116,14 @@ void invite_players() {
   for( int player = 0; player < PLAYERS; player++ ) {
     humanplayer[ player ] = false;
     alive[ player ] = true;
-    setColor( playerLEDs[ player ] , 0 );
+    setColor( playerLEDs[ player ], 0 );
   }
 
   int counter = 0;
-  while( ( ( humanplayer[ 0 ] || humanplayer[ 1 ] || humanplayer[ 2 ] ) == false ) || ( counter < 100 ) ) { // wait a bit for players to join
+  while( 
+    !( humanplayer[ 0 ] && humanplayer[ 1 ] && humanplayer[ 2 ] ) ||
+    ( ( ( humanplayer[ 0 ] || humanplayer[ 1 ] || humanplayer[ 2 ] ) == false ) || ( counter < 100 ) )
+  ) { // wait a bit for players to join
     counter++;
     
     for( int player = 0; player < PLAYERS; player++ ) { // check whether player pressed buttons
@@ -147,7 +157,7 @@ void announce_winner() {
       c = colors[ player ];
     }
   }
-  for( int flash = 0; flash < 5; flash++ ) {
+  for( int flash = 0; flash < 10; flash++ ) {
     for( int i = 0; i < 16; i++ ) {
       fillborder( color( i * getRed(c) / 16, i * getGreen(c) / 16, i * getBlue(c) / 16 ) );
       usleep(5000);
