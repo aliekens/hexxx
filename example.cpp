@@ -5,7 +5,7 @@
 
 // little helper to pick a random color
 ws2811_led_t randomcolor() {
-  return color( rand() % 256, rand() % 256, rand() % 256 );
+  return applyGammaCorrection( color( rand() % 256, rand() % 256, rand() % 256 ) );
 }
 
 // a "logic_thread" function always has to be defined in a HEXXX application
