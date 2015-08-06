@@ -8,9 +8,9 @@ int direction[PLAYERS];
 ws2811_led_t colors[PLAYERS];
 
 void setup_tron(void) {
-  colors[ 0 ] = color( 255, 255, 0 );
-  colors[ 1 ] = color( 0, 255, 255 );
-  colors[ 2 ] = color( 255, 0, 255 );
+  colors[ 0 ] = color( 255, 0, 0 );
+  colors[ 1 ] = color( 0, 255, 0 );
+  colors[ 2 ] = color( 0, 0, 255 );
   int r = rand() % 2;
   position[ 0 ] = 335 + r;
   direction[ 0 ] = 2 - r;
