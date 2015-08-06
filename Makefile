@@ -4,7 +4,11 @@ OBJS = hexxx.o ledstring.o color.o buttons.o coordinates.o
 LIBS = ws2811/libws2811.a gpio/gpio.a 
 CPPFLAGS = -std=c++0x -O2
 
-example: example.o $(OBJS)
+$(LIBS): force_look
+	cd ws2811 ; make
+	cd gpio ; make
+
+example: example.o $(OBJS) $(LIBS)
 	g++ $(CPPFLAGS) -o example example.o $(OBJS) $(LIBS) -pthread
 
 tron: tron.o $(OBJS)
@@ -15,3 +19,6 @@ clean:
 
 distclean: clean
 	make clean -C ws2811
+
+force_look :
+	true
