@@ -59,7 +59,13 @@ ws2811_led_t applyGammaCorrection( uint8_t red, uint8_t green, uint8_t blue ) {
 }
 
 ws2811_led_t darkenColor( ws2811_led_t c ) {
-  return color( 4 * (uint32_t)getRed( c ) / 5, 4 * (uint32_t)getGreen( c ) / 5, 4 * (uint32_t)getBlue( c ) / 5 );
+  uint8_t red = 4 * (uint32_t)getRed( c ) / 5;
+  uint8_t green = 4 * (uint32_t)getGreen( c ) / 5;
+  uint8_t blue = 4 * (uint32_t)getBlue( c ) / 5;
+  if( red < 5 ) red = 0;
+  if( green < 5 ) green = 0;
+  if( blue < 5 ) blue = 0;
+  return color( red, green, blue );
 }
 
 ws2811_led_t randomColor( int brightness ) {
