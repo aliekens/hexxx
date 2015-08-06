@@ -125,8 +125,6 @@ void invite_players() {
   }
   
   fillhexagon( 0 );
-  for( int player = 0; player < PLAYERS; player++ )
-    setColor( playerLEDs[ player ], colors[ player ] );
 }
 
 void announce_winner() {
