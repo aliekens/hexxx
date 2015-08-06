@@ -73,6 +73,19 @@ void play_tron(void) {
     
     }
     
+    if( position[ 0 ] == position[ 1 ] ) {
+      alive[ 0 ] = false;
+      alive[ 1 ] = false;
+    }
+    if( position[ 1 ] == position[ 2 ] ) {
+      alive[ 1 ] = false;
+      alive[ 2 ] = false;
+    }
+    if( position[ 0 ] == position[ 2 ] ) {
+      alive[ 0 ] = false;
+      alive[ 2 ] = false;
+    }
+    
     print_button_states();
     reset_button_states();
   
