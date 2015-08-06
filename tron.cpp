@@ -121,7 +121,7 @@ void invite_players() {
 
   int counter = 0;
   while( 
-    !( humanplayer[ 0 ] && humanplayer[ 1 ] && humanplayer[ 2 ] ) ||
+    !( humanplayer[ 0 ] || humanplayer[ 1 ] || humanplayer[ 2 ] ) ||
     ( ( ( humanplayer[ 0 ] || humanplayer[ 1 ] || humanplayer[ 2 ] ) == false ) || ( counter < 100 ) )
   ) { // wait a bit for players to join
     counter++;
