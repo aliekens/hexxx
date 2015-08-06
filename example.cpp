@@ -8,7 +8,7 @@ ws2811_led_t randomcolor() {
   return color( rand() % 256, rand() % 256, rand() % 256 );
 }
 
-// a "" function always has to be defined in a HEXXX application
+// a "logic_thread" function always has to be defined in a HEXXX application
 void logic_thread() {
   
   int position = 0; // start in the center of the hexagon
