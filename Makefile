@@ -1,16 +1,11 @@
-OBJS = ledstring.o color.o buttons.o coordinates.o
+all: tron
 
-hexxx: main.o $(OBJS)
-	g++ -std=c++0x -o hexxx main.o $(OBJS) ws2811/libws2811.a gpio/gpio.a -pthread -O2 
+OBJS = hexxx.o ledstring.o color.o buttons.o coordinates.o
+LIBS = ws2811/libws2811.a gpio/gpio.a 
+CPPFLAGS = -std=c++0x -O2
 
-main.o: main.cpp
-	g++ -std=c++0x -o main.o -c -g -O2 main.cpp
-
-%.o: %.c %.h 
-	gcc -o $@ -c -g -O2 $<
-
-%.o: %.cpp %.h 
-	g++ -std=c++0x -o $@ -c -g -O2 $<
+tron: tron.o $(OBJS)
+	g++ $(CPPFLAGS) -o tron tron.o $(OBJS) $(LIBS) -pthread
 
 clean:
 	@rm -vf *.o *.a hexxx

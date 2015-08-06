@@ -1,3 +1,6 @@
+#ifndef GPIO__H
+#define GPIO__H
+
 /*
    minimal_gpio.c
    2015-02-10
@@ -127,3 +130,5 @@ uint32_t gpioTick(void);
 static uint32_t * initMapMem(int fd, uint32_t addr, uint32_t len);
 
 int gpioInitialise(void);
+
+#endif
