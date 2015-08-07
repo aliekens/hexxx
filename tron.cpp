@@ -7,6 +7,15 @@ bool alive[PLAYERS];
 int direction[PLAYERS];
 ws2811_led_t colors[PLAYERS];
 
+#define USE_SUPER_AI 1
+#ifdef USE_SUPER_AI
+#define SUPER_AI_CHANCE 100 // 1 in a SUPER_AI_CHANCE
+static bool superAi[PLAYERS];
+static int superAiStep;
+static int superAicircl;
+
+#endif
+
 void setup_tron(void) {
   colors[ 0 ] = color( 255, 0, 0 );
   colors[ 1 ] = color( 0, 255, 0 );
@@ -30,7 +39,7 @@ void play_tron(void) {
   
   int sleep = 200000;
   
-  while( ( alive[ 0 ] && alive[ 1 ] ) || ( alive[ 1 ] && alive[ 2 ] ) || ( alive[ 0 ] && alive[ 2 ] ) ) { // play as long as 2 players are alive
+  while( ( alive[ 0 ] + alive[ 1 ] + alive[ 2 ] )>=2) { // play as long as 2 players are alive
   
     // fade out player tails
     darkenhexagon();
@@ -46,7 +55,24 @@ void play_tron(void) {
           if (button_rising[ player * 2 + 1 ] )
             direction[ player ] = ( direction[ player ] + 5 ) % 6;
 
-        } else {
+        }
+        #ifdef USE_SUPER_AI
+        else if (superAi[ player]){
+            //go 3 steps forward then start making a circle the circle is 5 times left then forward, repeat
+            if(superAiStep==0){
+                if(superAicircl>0){
+                    direction[ player ] = ( direction[ player ] + 1 ) % 6;
+                    superAicircl--;
+                }
+                else
+                    superAicircl=5;
+
+            }
+            else
+                superAiStep--;
+        }
+        #endif
+        else {
 
           if( ( position[ player ] == neighbors[ position[ player ] ][ direction[ player ] ] ) )
             if( rand() % 2 )
@@ -115,14 +141,16 @@ void invite_players() {
   
   for( int player = 0; player < PLAYERS; player++ ) {
     humanplayer[ player ] = false;
+#ifdef USE_SUPER_AI
+    superAi[ player ] = false;
+#endif
     alive[ player ] = true;
     setColor( playerLEDs[ player ], 0 );
   }
 
   int counter = 0;
   while( 
-    !( humanplayer[ 0 ] || humanplayer[ 1 ] || humanplayer[ 2 ] ) ||
-    ( ( ( humanplayer[ 0 ] || humanplayer[ 1 ] || humanplayer[ 2 ] ) == false ) || ( counter < 100 ) )
+    !( humanplayer[ 0 ] || humanplayer[ 1 ] || humanplayer[ 2 ] ) || ( counter < 100 ) ) // dubbele check dat human player false is 'or' is Commutative
   ) { // wait a bit for players to join
     counter++;
     
@@ -146,7 +174,18 @@ void invite_players() {
 
     usleep( 20000 );
   }
-  
+#ifdef USE_SUPER_AI
+  for (int player = 0; player < PLAYERS; player++){
+    if( !humanplayer[ player ] ){
+      if((rand() % SUPER_AI_CHANCE) == 0 ){
+         superAi[player]=true;
+         superAiStep=3;
+         superAicircl=5;
+         break; //only a single super ai allowed.
+        }
+    }
+  }
+#endif
   fillhexagon( 0 );
 }
 
