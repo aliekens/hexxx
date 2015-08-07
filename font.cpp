@@ -2,13 +2,15 @@
 #include "coordinates.h"
 #include "hexxx.h"
 
-uint32_t font[3][6] = {
+uint32_t font[5][6] = {
   { 0b111110, 0b011000, 0b111100, 0b010000, 0b110001, 0b111111 }, // E
   { 0b110011, 0b010001, 0b111111, 0b010001, 0b110011, 0b110011 }, // H
-  { 0b111011, 0b001110, 0b001100, 0b001110, 0b010110, 0b110011 }  // X
+  { 0b111011, 0b001110, 0b001100, 0b001110, 0b010110, 0b110011 }, // X
+  { 0b000000, 0b001110, 0b011110, 0b001110, 0b001100, 0b000000 },  // diamond
+  { 0b000000, 0b000000, 0b000000, 0b000000, 0b000000, 0b000000 }  // space
 };
 
-std::string characters = "EHX";
+std::string characters = "EHXx ";
 
 int printCharacter( int position, char c, ws2811_led_t color ) {
   int fontposition = characters.find( c );
