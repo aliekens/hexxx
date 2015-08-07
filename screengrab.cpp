@@ -16,18 +16,36 @@ void logic_thread() {
   
   while (1) {
     
-    XColor c;
     image = XGetImage (d, RootWindow (d, DefaultScreen (d)), 0, 0, 256, 256, AllPlanes, XYPixmap);
 
     for( int i = 0; i < 397; i++ ) {
-      c.pixel = XGetPixel (image, coordinates[ i ][ 0 ], 255 - coordinates[ i ][ 1 ] );
-      XQueryColor (d, DefaultColormap(d, DefaultScreen (d)), &c);
-      ws2811_led_t wsc = applyGammaCorrection( color( c.red / 256, c.green / 256, c.blue / 256 ) );
+      
+      int red = 0;
+      int green = 0;
+      int blue = 0;
+      int counter = 0;
+      
+      for( int x = -1; x <= 1; x++ )
+        for( int y = -1; y <= 1; y++ )
+          if( ( x >= 0 ) && ( y >= 0 ) && ( x <= 255 ) && ( y <= 255 ) ) {
+
+            XColor c;
+            c.pixel = XGetPixel (image, coordinates[ i ][ 0 ] + x * 4, 255 - coordinates[ i ][ 1 ] + y * 4 );
+            XQueryColor (d, DefaultColormap(d, DefaultScreen (d)), &c);
+
+            red += c.red / 256;
+            green += c.green / 256;
+            blue += c.blue / 256;
+            
+            counter += 1;
+
+          }
+      ws2811_led_t wsc = applyGammaCorrection( color( red / counter, green / counter, blue / counter ) );
       setColor( i, wsc );
     }
       
     XFree (image);
-    usleep(30000); // 100 per second
+//    usleep(30000); // 100 per second
   }
   
   
