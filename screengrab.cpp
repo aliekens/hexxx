@@ -1,4 +1,5 @@
 #include "hexxx.h"
+#include "coordinates.h"
 
 #include <iostream>
 #include <X11/Xlib.h>
@@ -30,7 +31,7 @@ void logic_thread() {
           if( ( x >= 0 ) && ( y >= 0 ) && ( x <= 255 ) && ( y <= 255 ) ) {
 
             XColor c;
-            c.pixel = XGetPixel (image, coordinates[ i ][ 0 ] + x * 4, 255 - coordinates[ i ][ 1 ] + y * 4 );
+            c.pixel = XGetPixel (image, position2x( i ) + x * 4, 255 - position2y( i ) + y * 4 );
             XQueryColor (d, DefaultColormap(d, DefaultScreen (d)), &c);
 
             red += c.red / 256;

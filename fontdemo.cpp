@@ -15,28 +15,28 @@ void logic_thread() {
     
     int position = 0;
     for( int i = 0; i < 3; i++ )
-      position = neighbors[ position ][ 2 ];
+      position = neighbor( position, 2 );
     for( int i = 0; i < 5; i++ )
-      position = neighbors[ position ][ 3 ];
+      position = neighbor( position, 3 );
     
     position = printCharacter( position, 'H', randColor() );
     position = printCharacter( position, 'E', randColor() );
 
     position = 0;
     for( int i = 0; i < 4; i++ )
-      position = neighbors[ position ][ 4 ];
+      position = neighbor( position, 4 );
     for( int i = 0; i < 7; i++ )
-      position = neighbors[ position ][ 3 ];
+      position = neighbor( position, 3 );
     position = printCharacter( position, 'X', randColor() );
-    position = neighbors[ position ][ 3 ];
+    position = neighbor( position, 3 );
     position = printCharacter( position, 'X', randColor() );
-    position = neighbors[ position ][ 3 ];
+    position = neighbor( position, 3);
     position = printCharacter( position, 'X', randColor() );
 
     for( int i = 0; i < 6; i++ )
-      position = neighbors[ position ][ 4 ];
+      position = neighbor( position, 4 );
     for( int i = 0; i < 9; i++ )
-      position = neighbors[ position ][ 3 ];
+      position = neighbor( position, 3 );
     position = printCharacter( position, 'x', randColor() );
 
     usleep(100000); // 100 per second

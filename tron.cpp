@@ -38,7 +38,7 @@ void play_tron(void) {
 
         } else {
 
-          if( ( player_position[ player ] == neighbors[ player_position[ player ] ][ player_direction[ player ] ] ) )
+          if( player_position[ player ] == neighbor( player_position[ player ], player_direction[ player ] ) )
             if( rand() % 2 )
               player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
             else
@@ -51,10 +51,10 @@ void play_tron(void) {
 
         }
 
-        int next_position = neighbors[ player_position[ player ] ][ player_direction[ player ] ];
+        int next_position = neighbor( player_position[ player ], player_direction[ player ] );
         ws2811_led_t next_position_color = getColor( next_position );
         if( ( getRed( next_position_color ) < 50 ) &&  ( getGreen( next_position_color ) < 50 ) && ( getBlue( next_position_color ) < 50 ) )
-          player_position[ player ] = neighbors[ player_position[ player ] ][ player_direction[ player ] ];
+          player_position[ player ] = neighbor( player_position[ player ], player_direction[ player ] );
         else {
           player_alive[ player ] = false;
           setColor( playerLEDs[ player ], 0 );

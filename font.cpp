@@ -19,22 +19,22 @@ int printCharacter( int position, char c, ws2811_led_t color ) {
       for( int column = 0; column < 6; column++ ) {
         if( ( font[ fontposition ][ row ] >> ( 5 - column ) ) & 0x01 )
           setColor( position, color );
-        position = neighbors[ position ][ 0 ]; // step right
+        position = neighbor( position, 0 );
       }
       // move to next row
       if( row % 2 )
-        position = neighbors[ position ][ 1 ];
+        position = neighbor( position, 1 );
       else
-        position = neighbors[ position ][ 2 ];
+        position = neighbor( position, 2 );
       for( int i = 0; i < 6; i++ ) {
-        position = neighbors[ position ][ 3 ];
+        position = neighbor( position, 3 );
       }
     }
   }
   // move to position for next character
   for( int i = 0; i < 6; i++ )
-    position = neighbors[ position ][ 5 ];
+    position = neighbor( position, 5 );
   for( int i = 0; i < 4; i++ )
-    position = neighbors[ position ][ 0 ];
+    position = neighbor( position, 0 );
   return position;
 }
