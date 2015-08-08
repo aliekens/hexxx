@@ -19,6 +19,14 @@ tron: tron.o $(OBJS) $(LIBS)
 screengrab: screengrab.o $(OBJS) $(LIBS)
 	g++ $(CPPFLAGS) -o screengrab screengrab.o $(OBJS) $(LIBS) -pthread
 
+
+emulator: emulator.o $(OBJS) $(LIBS)
+        g++ $(CPPFLAGS) -o emulator emulator.o $(OBJS) $(LIBS) -pthread
+
+
+beer: beer.o $(OBJS) $(LIBS)
+        g++ $(CPPFLAGS) -o beer beer.o $(OBJS) $(LIBS) -pthread
+
 clean:
 	@rm -vf *.o *.a $(TARGETS)
 
