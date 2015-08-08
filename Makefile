@@ -10,16 +10,16 @@ $(LIBS): force_look
 	cd ws2811 ; make
 	cd gpio ; make
 
-example: example.o $(OBJS) $(LIBS)
+example: $(LIBS) $(OBJS) example.o
 	g++ $(CPPFLAGS) -o example example.o $(OBJS) $(LIBS) -pthread
 
-tron: tron.o $(OBJS) $(LIBS)
+tron: $(LIBS) $(OBJS) tron.o
 	g++ $(CPPFLAGS) -o tron tron.o $(OBJS) $(LIBS) -pthread
 
-screengrab: screengrab.o $(OBJS) $(LIBS)
+screengrab: $(LIBS) $(OBJS) screengrab.o
 	g++ $(CPPFLAGS) -o screengrab screengrab.o $(OBJS) $(LIBS) -pthread
 
-fontdemo: fontdemo.o $(OBJS) $(LIBS)
+fontdemo: $(LIBS) $(OBJS) fontdemo.o
 	g++ $(CPPFLAGS) -o fontdemo fontdemo.o $(OBJS) $(LIBS) -pthread
 
 clean:

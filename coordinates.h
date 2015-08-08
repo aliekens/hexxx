@@ -9,8 +9,8 @@
 // convert a LED's number to a physical X, Y coordinate in [0:255][0:255]
 
 extern int coordinates_array[400][2];
-int position2x( int position );
-int position2y( int position );
+int led2bytex( int position );
+int led2bytey( int position );
 
 // LED TO NEIGHBORING LED
 // convert a LED's position to one of its neighbors, using the following direction:
@@ -32,21 +32,23 @@ int neighbor( int position, int neighbor );
 
 // TODO: POLAR COORDINATE TO LED
 
-// TODO: X,Y IN SLANTED RECTANGLE TO LED
-// map a rectangle [0:20,0:20] to positions in the HEXXX
-// equals -1 if there is no pixel at the current position
+// HEXXX IN A SKEWED AXIS COORDINATE SYSTEM
 
-//          Y
-//         /
-//     21 .----.----. (22,22)
-//       /******\-1/
-//      /********\/
-//  11 /\********/
-//    /-1\******/
-// 0 /____\____/____ X
-//  0     11  21
+//                  Y
+//                 /
+//      -11,11    /
+//         .-----/0,11
+//        /     / \
+// ______/_____/___\________ X
+//  -11,0\    /0,0 /11,0
+//        \  /    /
+//         \/____/
+//    0,-11/     11,-11
+//        /
 
-// extern int coordinate2position[ 23 ][ 23 ];
-// int coordinate2position( int x, int y );
+extern int skewed2led_array[23][23];
+int skewed2led( int x, int y ); // returns LED number in [-11:11][-11:11], or -1 if no LED, or -1 if out of range
+int led2skewedx( int position );
+int led2skewedy( int position );
 
 #endif
