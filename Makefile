@@ -1,8 +1,8 @@
-TARGETS = example tron screengrab
+TARGETS = example tron screengrab beer emulator
 
 all: $(TARGETS)
 
-OBJS = hexxx.o ledstring.o color.o buttons.o coordinates.o
+OBJS = hexxx.o ledstring.o color.o buttons.o coordinates.o draw.o
 LIBS = ws2811/libws2811.a gpio/gpio.a -lX11
 CPPFLAGS = -std=c++0x -O2
 
