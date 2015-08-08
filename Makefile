@@ -2,7 +2,7 @@ TARGETS = example tron screengrab fontdemo
 
 all: $(TARGETS)
 
-OBJS = hexxx.o ledstring.o color.o buttons.o coordinates.o font.o
+OBJS = hexxx.o ledstring.o color.o buttons.o coordinates.o font.o players.o
 LIBS = ws2811/libws2811.a gpio/gpio.a -lX11
 CPPFLAGS = -std=c++0x -O2
 

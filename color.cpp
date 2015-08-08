@@ -1,4 +1,5 @@
 #include "color.h"
+#include "hexxx.h"
 #include <stdlib.h>
 
 ws2811_led_t color( uint8_t red, uint8_t green, uint8_t blue ) {
@@ -66,6 +67,12 @@ ws2811_led_t darkenColor( ws2811_led_t c ) {
   if( green <= 35 ) green = 0;
   if( blue <= 35 ) blue = 0;
   return color( red, green, blue );
+}
+
+void darkenhexagon() {
+  for( int i = 0; i < LED_COUNT - 3; i++ ) {
+    setColor( i, darkenColor( getColor( i ) ) );
+  }
 }
 
 ws2811_led_t randomColor( int brightness ) {

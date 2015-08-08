@@ -18,6 +18,8 @@ ws2811_led_t applyGammaCorrection( const ws2811_led_t color );
 ws2811_led_t applyGammaCorrection( const uint8_t red, const uint8_t green, const uint8_t blue );
 
 ws2811_led_t darkenColor( const ws2811_led_t color );
+void darkenhexagon();
+
 ws2811_led_t randomColor( const int brightness = 256 );
 
 #endif
