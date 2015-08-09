@@ -105,7 +105,6 @@ bool inClockwiseTriangle( int16_t x, int16_t y, int16_t x1, int16_t y1, int16_t 
 
 void logic_thread() {
   while( true ) {
-    fill( color( 0, 0, 0 ) );
     map3Dto2D();
     bool found;
     for( int i = 0; i < 397; i++ ) {
