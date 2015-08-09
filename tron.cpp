@@ -16,12 +16,26 @@ void setup_tron(void) {
   player_direction[ 2 ] = 4 - r;
 }
 
+int last_turn[PLAYERS] = {0,0,0};
 void randomize_direction_for_player( int player ) {
   if( rand() % 4 < 3 ) {
-    if( rand() % 2 )
-      player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
-    else
-      player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6; // smart hack
+    if( last_turn[ PLAYERS ] == 1 ) {
+      if( rand() % 4 < 3 ) {
+        player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
+        last_turn[ PLAYERS ] = 1;
+      } else {
+        player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
+        last_turn[ PLAYERS ] = 2;
+      }
+    } else {
+      if( rand() % 4 < 3 ) {
+        player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
+        last_turn[ PLAYERS ] = 2;
+      } else {
+        player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
+        last_turn[ PLAYERS ] = 1;
+      }
+    }
   }
 }
 
