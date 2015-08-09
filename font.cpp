@@ -1,4 +1,7 @@
 #include "font.h"
+
+#include <string>
+
 #include "coordinates.h"
 #include "hexxx.h"
 
@@ -12,29 +15,22 @@ uint32_t font[5][6] = {
 
 std::string characters = "EHXx ";
 
-int printCharacter( int position, char c, ws2811_led_t color ) {
+void printCharacter( int skewedx, int skewedy, char c, ws2811_led_t color ) {
   int fontposition = characters.find( c );
   if( fontposition != std::string::npos ) {
-    for( int row = 5; row >= 0; row-- ) {
-      for( int column = 0; column < 6; column++ ) {
-        if( ( font[ fontposition ][ row ] >> ( 5 - column ) ) & 0x01 )
-          setColor( position, color );
-        position = neighbor( position, 0 );
-      }
-      // move to next row
-      if( row % 2 )
-        position = neighbor( position, 1 );
-      else
-        position = neighbor( position, 2 );
-      for( int i = 0; i < 6; i++ ) {
-        position = neighbor( position, 3 );
+    for( int x = 0; x < 6; x++ ) {
+      for( int y = 0; y < 6; y++ ) {
+        if( ( font[ fontposition ][ 5 - y ] >> ( 5 - x ) ) & 0x01 )
+          setColor( skewed2led( skewedx + x - ( y / 2 ), skewedy + y ), color );
       }
     }
   }
-  // move to position for next character
-  for( int i = 0; i < 6; i++ )
-    position = neighbor( position, 5 );
-  for( int i = 0; i < 4; i++ )
-    position = neighbor( position, 0 );
-  return position;
+}
+
+void printString( int skewedx, int skewedy, std::string str, ws2811_led_t color ) {
+  int counter = 0;
+  for(char& c : str) {
+    printCharacter( skewedx + counter * 7, skewedy, c, color );
+    counter++;
+  }
 }

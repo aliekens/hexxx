@@ -10,6 +10,7 @@
 extern uint32_t font[5][6];
 extern std::string characters;
 
-int printCharacter( int position, char c, ws2811_led_t color );
+void printCharacter( int skewedx, int skewedy, char c, ws2811_led_t color );
+void printString( int skewedx, int skewedy, std::string str, ws2811_led_t color );
 
 #endif
