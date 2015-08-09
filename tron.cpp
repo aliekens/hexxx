@@ -16,6 +16,33 @@ void setup_tron(void) {
   player_direction[ 2 ] = 4 - r;
 }
 
+int last_turn[PLAYERS] = {0,0,0};
+void randomize_direction_for_player( int player ) {
+  if( rand() % 4 < 3 ) {
+    if( last_turn[ PLAYERS ] == 1 ) {
+      if( rand() % 4 < 3 ) {
+        player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
+        last_turn[ PLAYERS ] = 1;
+      } else {
+        player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
+        last_turn[ PLAYERS ] = 2;
+      }
+    } else {
+      if( rand() % 4 < 3 ) {
+        player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
+        last_turn[ PLAYERS ] = 2;
+      } else {
+        player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
+        last_turn[ PLAYERS ] = 1;
+      }
+    }
+  }
+}
+
+int color_sum( ws2811_led_t c ) {
+  return getRed( c ) + getGreen( c ) + getBlue( c );
+}
+
 void play_tron(void) {
   
   int sleep = 200000;
@@ -24,6 +51,8 @@ void play_tron(void) {
   
     // fade out player tails
     darkenhexagon();
+    if( rand() % 2 )
+      darkenhexagon();
   
     // update players
     for( int player = 0; player < PLAYERS; player++ ) {
@@ -37,23 +66,40 @@ void play_tron(void) {
             player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
 
         } else {
+          
+          int next_position = neighbor( player_position[ player ], player_direction[ player ] );
+          int next_next_position = neighbor( next_position, player_direction[ player ] );
+          int next_next_next_position = neighbor( next_next_position, player_direction[ player ] );
+          int next_next_next_next_position = neighbor( next_next_next_position, player_direction[ player ] );
+          int next_next_next_next_next_position = neighbor( next_next_next_next_position, player_direction[ player ] );
+          int next_next_next_next_next_next_position = neighbor( next_next_next_next_next_position, player_direction[ player ] );
 
-          if( player_position[ player ] == neighbor( player_position[ player ], player_direction[ player ] ) )
-            if( rand() % 2 )
-              player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
-            else
-              player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6; // smart hack
-          else if( rand() % 5 == 0 )
-            if( rand() % 2 )
-              player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
-            else
-              player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6; // smart hack
-
+          int next_color = color_sum( getColor( next_position ) );
+          int next_next_color = color_sum( getColor( next_next_position ) );
+          
+          if( player_position[ player ] == next_position )
+            randomize_direction_for_player( player );
+          else if( next_position == next_next_position )
+            randomize_direction_for_player( player );
+          else if( next_next_position == next_next_next_position )
+            randomize_direction_for_player( player );
+          else if( next_next_next_position == next_next_next_next_position )
+            randomize_direction_for_player( player );
+          else if( next_next_next_next_position == next_next_next_next_next_position )
+            randomize_direction_for_player( player );
+          else if( next_next_next_next_next_position == next_next_next_next_next_next_position )
+            randomize_direction_for_player( player );
+          else if( next_color > 0 )
+            randomize_direction_for_player( player );
+          else if( next_next_color > 0 )
+            randomize_direction_for_player( player );
+          else if( rand() % 10 == 0 )
+            randomize_direction_for_player( player );
         }
 
         int next_position = neighbor( player_position[ player ], player_direction[ player ] );
         ws2811_led_t next_position_color = getColor( next_position );
-        if( ( getRed( next_position_color ) < 50 ) &&  ( getGreen( next_position_color ) < 50 ) && ( getBlue( next_position_color ) < 50 ) )
+        if( ( getRed( next_position_color ) < 20 ) &&  ( getGreen( next_position_color ) < 20 ) && ( getBlue( next_position_color ) < 20 ) )
           player_position[ player ] = neighbor( player_position[ player ], player_direction[ player ] );
         else {
           player_alive[ player ] = false;

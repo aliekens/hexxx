@@ -2,43 +2,37 @@
 #include "font.h"
 
 ws2811_led_t randColor() {
-  ws2811_led_t c = 0;
-  while( c == 0 )
-    c = color( ( rand() % 2 ) * 255, ( rand() % 2 ) * 255, ( rand() % 2 ) * 255 );
-  return c;
+  return applyGammaCorrection( color( rand() % 255, rand() % 255, rand() % 255 ) );
 }
 
 // a "logic_thread" function always has to be defined in a HEXXX application
 void logic_thread() {
-  
+
+  // bouncing scrolly, of course
+  int x = 0;
+  int direction = 1;
+  int counter = 0;
+  ws2811_led_t c;
   while (1) {
+
+//    fill(0);
+    darkenhexagon();
+    if( rand() % 20 == 0 ) c = randColor();
     
-    int position = 0;
-    for( int i = 0; i < 3; i++ )
-      position = neighbor( position, 2 );
-    for( int i = 0; i < 5; i++ )
-      position = neighbor( position, 3 );
+    x += direction;
+    if( x == 5 )
+      direction = -1;
+    if( x == -40 )
+      direction = 1;
+
+    int y = 10 * sin( counter / 5.0 ) - 2;
+
+    printString( x, y, "HEX", c );
+    printString( x + 7 * 3 - 1, y, "X", c );
+    printString( x + 7 * 4 - 2, y, "X", c );
+        
+    counter += 1;
     
-    position = printCharacter( position, 'H', randColor() );
-    position = printCharacter( position, 'E', randColor() );
-
-    position = 0;
-    for( int i = 0; i < 4; i++ )
-      position = neighbor( position, 4 );
-    for( int i = 0; i < 7; i++ )
-      position = neighbor( position, 3 );
-    position = printCharacter( position, 'X', randColor() );
-    position = neighbor( position, 3 );
-    position = printCharacter( position, 'X', randColor() );
-    position = neighbor( position, 3);
-    position = printCharacter( position, 'X', randColor() );
-
-    for( int i = 0; i < 6; i++ )
-      position = neighbor( position, 4 );
-    for( int i = 0; i < 9; i++ )
-      position = neighbor( position, 3 );
-    position = printCharacter( position, 'x', randColor() );
-
     usleep(100000); // 100 per second
     
   }
