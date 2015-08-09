@@ -18,7 +18,7 @@ void logic_thread() {
     
     // draw a pixel and move to a neighboring pixel
     setColor( position, c ); // set the LED at the current position to the current color
-    position = neighbors[ position][ rand() % 6 ]; // move to a random neighbor pixel (0 = go right, 1 = go top right, ...)
+    position = neighbor( position, rand() % 6 ); // move to a random neighbor pixel (0 = go right, 1 = go top right, ...)
     
     // if left button of player 0 (red buttons) is pressed, change color
     // player 0 has buttons 0 and 1, player 1 (clockwise neighbor of player 0) has 2 and 3, ...
