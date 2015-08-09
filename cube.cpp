@@ -66,7 +66,7 @@ uint32_t rainbowColor( int i ) {
   int b = 0;
   if( ( i <= 85 ) || ( i > 170 ) )
     b = costable[ ( ( (i + 85 ) % 256 ) * 3 / 2 ) % 256 ];
-  return color( r / 2, g / 2, b / 2 );
+  return color( r, g, b );
 }
 
 void map3Dto2D() {
@@ -106,6 +106,7 @@ bool inClockwiseTriangle( int16_t x, int16_t y, int16_t x1, int16_t y1, int16_t 
 void logic_thread() {
   while( true ) {
     map3Dto2D();
+    darkenhexagon();
     bool found;
     for( int i = 0; i < 397; i++ ) {
       found = false;
@@ -123,9 +124,6 @@ void logic_thread() {
             found = true;
           }
         }
-      }
-      if( !found ) {
-        setColor( i, COLOR_BLACK );
       }
     }
     rotateZ();
