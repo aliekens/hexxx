@@ -1,6 +1,8 @@
 #ifndef COORDINATES__H
 #define COORDINATES__H
 
+#define TAU 6.28318530718
+
 // this header defines a bunch of coordinte systems to translate all sorts of coordinates to LEDs and back to the physical world
 // note that all coordinate systems assume the viewpoint of PLAYER 0
 // renderings for another player can be drawn from player 0's viewpoint and then rotated
@@ -29,6 +31,10 @@ int neighbor( int position, int neighbor );
 // TODO: LED-TO-NEIGHBORS ON A DONUT (or whatever shape you get when wrapping the sides of a hexagon)
 
 // TODO: ROTATE 60DEGREES CLOCKWISE/COUNTERCLOCKWISE
+
+int leds_in_polar_ring( int ring );
+int polar2led( int ring, int led );
+int doublepolar2led( int ring, double led );
 
 // TODO: POLAR COORDINATE TO LED
 
