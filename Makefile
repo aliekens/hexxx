@@ -1,4 +1,4 @@
-TARGETS = example tron screengrab fontdemo cube
+TARGETS = example tron screengrab fontdemo cube flappybird
 
 all: $(TARGETS)
 
@@ -24,6 +24,9 @@ fontdemo: $(LIBS) $(OBJS) fontdemo.o
 
 cube: $(LIBS) $(OBJS) cube.o
 	g++ $(CPPFLAGS) -o cube cube.o $(OBJS) $(LIBS) -pthread
+
+flappybird: $(LIBS) $(OBJS) flappybird.o
+	g++ $(CPPFLAGS) -o flappybird flappybird.o $(OBJS) $(LIBS) -pthread
 
 clean:
 	@rm -vf *.o *.a $(TARGETS)
