@@ -1,9 +1,13 @@
 #include "hexxx.h"
 
-int holes[ 3 ] = { 1, 5, 8, 3, 6 };
+#include <iostream>
+
+int holes[ 3 ] = { 1, 4, 7 };
 
 double position[ 6 ] = { 0, 0, 0, 0, 0, 0 };
 double inertia[ 6 ] = { 0, 0, 0, 0, 0, 0 };
+
+int alivecounter[ 6 ];
 
 int colors[ 6 ][ 3 ] = 
 {
@@ -32,20 +36,22 @@ void logic_thread() {
     
     fill( COLOR_BLACK );
     
-    for( int wall = 0; wall < 5; wall++ ) {
+    for( int wall = 0; wall < 3; wall++ ) {
     
       for( int ring = 0; ring < 12; ring++ ) {
         
-      if( ( ring < holes[ wall ] ) || ( ring > holes[ wall ] + 1 ) )
-        antialiased_polar_pixel( ring, (double)angle + wall * TAU / 6.0, 0, 0, 0 );
+      if( ( ring < holes[ wall ] ) || ( ring > holes[ wall ] + 3 ) )
+        antialiased_polar_pixel( ring, (double)angle + wall * TAU / 3.0, 255, 255, 255 );
       else
-        antialiased_polar_pixel( ring, (double)angle + wall * TAU / 6.0, 255, 255, 255 );
+        antialiased_polar_pixel( ring, (double)angle + wall * TAU / 3.0, 0, 0, 0 );
 
       }
     
     }
     
     for( int player = 0; player < 6; player++ ) {
+      
+      alivecounter[ player ] += 1;
 
       bool button = false;
       switch( player ) {
@@ -81,7 +87,14 @@ void logic_thread() {
         inertia[ player ] = 0;
       }
       
-      int ring = position[ player ];
+      int ring = round( position[ player ] );
+      
+      if( getColor( polar2led( ring, player * ring ) ) != 0 ) {
+        alivecounter[ player ] = 0;
+      }
+        
+      
+      ring = position[ player ];
       double realpart = position[ player ] - ring;
       ring = 10 - ring;
       if( ring >= 0 ) {
@@ -97,11 +110,30 @@ void logic_thread() {
         );
       }
       
+      if( position[ player ] > 10 ) {
+        position[ player ] = 10;
+        inertia[ player ] = 0;
+      }
+      
     }
     
     reset_button_states();
     
-    angle += 0.2;
+    // elect winner
+    
+    ws2811_led_t winner = color( 0, 0, 0 );
+    int winnerscore = 10;
+    for( int player = 0; player < 6; player++ ) {
+      if( alivecounter[ player ] > winnerscore ) {
+        winnerscore = alivecounter[ player ];
+        winner = color( 255 * colors[ player ][ 0 ], 255 * colors[ player ][ 1 ], 255 * colors[ player ][ 2 ] );
+      }
+    }
+    setColor( playerLEDs[ 0 ], winner );
+    setColor( playerLEDs[ 1 ], winner );
+    setColor( playerLEDs[ 2 ], winner );
+    
+    angle += 0.05;
     
     usleep(100000); // 100 per second
 
