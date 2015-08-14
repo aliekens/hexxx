@@ -98,6 +98,43 @@ end
 puts "int neighbors_array[297][6] = { #{neighborsAsStrings.join(", ")} };"
 puts
 
+# WARPING NEIGHBORS
+
+# same as above, but when you hit an edge, you warp around to the other side
+# because of the hexagon shape, this can't be wrapped donut-style like a square, but needs a bit of a "twist"
+
+# go left
+neighbors = []
+(0..5).each do |direction|
+  origincounter = 0
+  coords.each do |pointx,pointy|
+    targetx = pointx + 0.9 * Math::cos( direction * tau / 6.0 )
+    targety = pointy + 0.9 * Math::sin( direction * tau / 6.0 )
+
+    target = findnearest( coords, targetx, targety )
+  
+    if target == -1
+      target = 331 + ( ( origincounter - 331 ) + 33 ) % 66; # rotate
+    end
+    
+    if direction == 0
+      neighbors << [target]
+    else
+      neighbors[ origincounter ] << target
+    end
+  
+    origincounter += 1
+  end
+end
+
+neighborsAsStrings = []
+neighbors.each do |ns|
+  neighborsAsStrings << "{" + ns.join(",") + "}"
+end
+
+puts "int warping_neighbors_array[297][6] = { #{neighborsAsStrings.join(", ")} };"
+puts
+
 # HEXXX IN A SKEWED AXIS COORDINATE SYSTEM
 
 #                  Y
