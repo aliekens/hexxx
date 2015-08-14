@@ -10,7 +10,7 @@
 // LED TO PHYSICAL COORDINATE
 // convert a LED's number to a physical X, Y coordinate in [0:255][0:255]
 
-extern int coordinates_array[400][2];
+extern int coordinates_array[397][2];
 int led2bytex( int position );
 int led2bytey( int position );
 
@@ -24,9 +24,11 @@ int led2bytey( int position );
 //    / \
 //   4   5
 
-extern int neighbors_array[400][6];
-
+extern int neighbors_array[397][6];
 int neighbor( int position, int neighbor );
+
+extern int warping_neighbors_array[397][6];
+int warping_neighbor( int position, int neighbor );
 
 // TODO: LED-TO-NEIGHBORS ON A DONUT (or whatever shape you get when wrapping the sides of a hexagon)
 
