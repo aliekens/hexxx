@@ -34,11 +34,21 @@ int warping_neighbor( int position, int neighbor );
 
 // TODO: ROTATE 60DEGREES CLOCKWISE/COUNTERCLOCKWISE
 
-int leds_in_polar_ring( int ring );
-int polar2led( int ring, int led );
-int doublepolar2led( int ring, double led );
+// POLAR COORDINATE TO LED
 
-// TODO: POLAR COORDINATE TO LED
+// The HEXXX has 12 "rings", numbered 0 .. 11
+// The inner ring (ring 0) is the center RGB LED. 
+// The first ring (ring 1) has 6 LEDs, surrounding the center. The LED closest to the left button of user 0 (red buttons) is LED 0 in this ring. The LEDs are numbered counter-clockwise from 0 to 6.
+// The nth ring has n*6 LEDs, numbered similarly to the first ring, from 0 to n*6-1
+
+// compute the number of LEDs in ring
+int leds_in_polar_ring( int ring );
+
+// convert a ring-LED coordinate to the LED's ID, in 0 .. n*6-1 (circularized in the function)
+int polar2led( int ring, int led );
+
+// convert a ring-angle coordinate to the LED's ID, angle in 0 .. tau (circularized in the function)
+int doublepolar2led( int ring, double angle );
 
 // HEXXX IN A SKEWED AXIS COORDINATE SYSTEM
 
