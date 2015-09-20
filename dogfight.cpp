@@ -1,7 +1,48 @@
 #include "hexxx.h"
 #include "players.h"
 
-int player_direction[PLAYERS];
+#include <vector>
+#include <algorithm>
+
+int player_direction[ PLAYERS ];
+bool player_shield[ PLAYERS ][ 6 ];
+
+class Bullet {
+public:
+  int position;
+  int direction;
+  int age;
+  
+  Bullet( int position, int direction );
+  void update();
+  void render();
+};
+
+Bullet::Bullet( int position, int direction ) {
+  this->position = position;
+  this->direction = direction;
+  this->age = 0;
+}
+
+void Bullet::update() {
+  position = warping_neighbor( position, direction );
+  age += 1;
+}
+
+void Bullet::render() {
+  setColor( position, 0x408040 );
+}
+
+std::vector< Bullet >
+removeOldBullets( std::vector< Bullet > bullets ) {
+  std::vector< Bullet > result;
+  for( std::vector< Bullet >::iterator i = bullets.begin(); i != bullets.end(); i++ ) {
+    if( i->age < 20 ) {
+      result.push_back( *i );
+    }
+  }
+  return result;
+}
 
 void setup_tron(void) {
   player_color[ 0 ] = color( 255, 0, 0 );
@@ -14,6 +55,12 @@ void setup_tron(void) {
   player_direction[ 1 ] = ( 6 - r ) % 6;
   player_position[ 2 ] = 335 + 22 + r;
   player_direction[ 2 ] = 4 - r;
+  
+  for( int player = 0; player < PLAYERS; player++ ) {
+    for( int shield = 0; shield < 6; shield++ ) {
+      player_shield[ player ][ shield ] = true;
+    }
+  }
 }
 
 int last_turn[PLAYERS] = {0,0,0};
@@ -45,18 +92,27 @@ int color_sum( ws2811_led_t c ) {
 
 void play_tron(void) {
   
+  std::vector< Bullet > bullets;
+
   int sleep = 200000;
+  int counter = 0;
+  bullets.clear();
   
   while( ( player_alive[ 0 ] && player_alive[ 1 ] ) || ( player_alive[ 1 ] && player_alive[ 2 ] ) || ( player_alive[ 0 ] && player_alive[ 2 ] ) ) { // play as long as 2 players are alive
   
+    counter += 1;
+    
     // fade out player tails
-    darkenhexagon();
-    if( rand() % 2 )
-      darkenhexagon();
+    fillhexagon( COLOR_BLACK );
   
     // update players
     for( int player = 0; player < PLAYERS; player++ ) {
       if( player_alive[ player ] ) {
+        
+        if( counter % 10 == 0 ) {
+          Bullet b( player_position[ player ], player_direction[ player ] );
+          bullets.push_back( b );
+        }
 
         if( player_human[ player ] ) {
 
@@ -66,34 +122,7 @@ void play_tron(void) {
             player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
 
         } else {
-          
-          int next_position = warping_neighbor( player_position[ player ], player_direction[ player ] );
-          int next_next_position = warping_neighbor( next_position, player_direction[ player ] );
-          int next_next_next_position = warping_neighbor( next_next_position, player_direction[ player ] );
-          int next_next_next_next_position = warping_neighbor( next_next_next_position, player_direction[ player ] );
-          int next_next_next_next_next_position = warping_neighbor( next_next_next_next_position, player_direction[ player ] );
-          int next_next_next_next_next_next_position = warping_neighbor( next_next_next_next_next_position, player_direction[ player ] );
-
-          int next_color = color_sum( getColor( next_position ) );
-          int next_next_color = color_sum( getColor( next_next_position ) );
-          
-          if( player_position[ player ] == next_position )
-            randomize_direction_for_player( player );
-          else if( next_position == next_next_position )
-            randomize_direction_for_player( player );
-          else if( next_next_position == next_next_next_position )
-            randomize_direction_for_player( player );
-          else if( next_next_next_position == next_next_next_next_position )
-            randomize_direction_for_player( player );
-          else if( next_next_next_next_position == next_next_next_next_next_position )
-            randomize_direction_for_player( player );
-          else if( next_next_next_next_next_position == next_next_next_next_next_next_position )
-            randomize_direction_for_player( player );
-          else if( next_color > 0 )
-            randomize_direction_for_player( player );
-          else if( next_next_color > 0 )
-            randomize_direction_for_player( player );
-          else if( rand() % 10 == 0 )
+          if( rand()% 5 == 0 )
             randomize_direction_for_player( player );
         }
 
@@ -132,14 +161,30 @@ void play_tron(void) {
   
     // render players on new positions
     for( int player = 0; player < PLAYERS; player++ ) {
-      if( player_alive[ player ] )
+      if( player_alive[ player ] ) {
         setColor( player_position[ player ], player_color[ player ] );
-      else
-        setColor( player_position[ player ], 0xffffff );
+//        for( int shield = 0; shield < 6; shield++ ) {
+//          if( player_shield[ player ][ shield ] )
+//            setColor( warping_neighbor( player_position[ player ], shield ), 0x808080 );
+//        }
+        setColor( 
+          warping_neighbor( player_position[ player ], player_direction[ player ] + 3 ), 
+          darkenColor( player_color[ player ], 1, 2, 0 )
+        );
+      }
     }
     
+    for( int i = 0; i < 2; i++ ) {
+      for( std::vector< Bullet >::iterator it = bullets.begin(); it != bullets.end(); ++it ) {
+        it->update();
+      }
+    }
+    for( std::vector< Bullet >::iterator it = bullets.begin(); it != bullets.end(); ++it ) {
+      it->render();
+    }
+    bullets = removeOldBullets( bullets );
+    
     usleep( sleep );
-    sleep *= 0.99;
   
   }
   

@@ -8,7 +8,31 @@
 // renderings for another player can be drawn from player 0's viewpoint and then rotated
 
 // LED TO PHYSICAL COORDINATE
-// convert a LED's number to a physical X, Y coordinate in [0:255][0:255]
+
+// OPTION 1: normalized coordinate system
+
+// Center LED is at origin with coordinate ( 0.0, 0.0 )
+// The outer corner LEDs fit within a unity circle around this origin
+// E.g., the coordinate for the rightmost LED from the RED player's POV is at position ( 1.0, 0.0 ) and the leftmost at ( -1.0, 0.0 )
+// The coordinates of the other corner LEDs are at ( ± 1/2, ± √3/2 )
+
+//              | Y
+//              |
+//              |
+//           .--|--.
+//          /   |   \
+//   ______/____|____\________ X
+// -1.0,0.0\    |    /1.0,0.0
+//          \   |   /
+//           '--|--'
+//              |
+//              |
+
+extern float unit_coordinates_array[397][2];
+float led2unitx( int position );
+float led2unity( int position );
+
+// OPTION 2: X and Y coordinates are in [0:255][0:255], with the hexagon centered at ( 127.5, 127.5 )
 
 extern int coordinates_array[397][2];
 int led2bytex( int position );

@@ -40,10 +40,10 @@ void logic_thread() {
     
       for( int ring = 0; ring < 12; ring++ ) {
         
-      if( ( ring < holes[ wall ] ) || ( ring > holes[ wall ] + 3 ) )
+//      if( ( ring < holes[ wall ] ) || ( ring > holes[ wall ] + 3 ) )
         antialiased_polar_pixel( ring, (double)angle + wall * TAU / 3.0, 255, 255, 255 );
-      else
-        antialiased_polar_pixel( ring, (double)angle + wall * TAU / 3.0, 0, 0, 0 );
+//      else
+//        antialiased_polar_pixel( ring, (double)angle + wall * TAU / 3.0, 0, 0, 0 );
 
       }
     
