@@ -8,6 +8,10 @@ def coordAsByteArray( x, y )
   "{#{(x*11.5+127.5).to_i},#{(y*11.5+127.5).to_i}}"
 end
 
+def coordAsUnitArray( x, y )
+  "{#{x/11},#{y/11}}"
+end
+
 def printcoord( x, y )
   puts "#{x}\t#{y}"
 end
@@ -54,7 +58,15 @@ result = []
 coords.each do |x,y|
   result << coordAsByteArray( x, y )
 end
-puts "int coordinates_array[297][2] = { #{result.join(", ")} };"
+puts "int coordinates_array[397][2] = { #{result.join(", ")} };"
+puts
+
+# POSITION ARRAY
+result = []
+coords.each do |x,y|
+  result << coordAsUnitArray( x, y )
+end
+puts "float unit_coordinates_array[397][2] = { #{result.join(", ")} };"
 puts
 
 # NEIGHBORS
