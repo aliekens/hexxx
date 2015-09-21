@@ -69,6 +69,13 @@ ws2811_led_t darkenColor( ws2811_led_t c, int multiplier, int diviser, int min )
   return color( red, green, blue );
 }
 
+ws2811_led_t darkenColor( ws2811_led_t c, double factor ) {
+  uint8_t red = factor * getRed( c );
+  uint8_t green = factor * getGreen( c );
+  uint8_t blue = factor * getBlue( c );
+  return color( red, green, blue );
+}
+
 void darkenhexagon() {
   for( int i = 0; i < LED_COUNT - 3; i++ ) {
     setColor( i, darkenColor( getColor( i ) ) );

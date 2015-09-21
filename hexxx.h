@@ -29,7 +29,8 @@ extern "C" {
 #include "buttons.h"
 #include "coordinates.h"
 
-#define LED_COUNT                                400
+#define LED_COUNT 400
+#define HEXAGON_LED_COUNT 397
 
 #define BUTTON_0_LEFT_GPIO 2
 #define BUTTON_0_RIGHT_GPIO 3

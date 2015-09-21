@@ -1,8 +1,8 @@
-TARGETS = example tron screengrab fontdemo cube flappybird dogfight
+TARGETS = example tron screengrab fontdemo cube flappybird dogfight circles
 
 all: $(TARGETS)
 
-OBJS = hexxx.o ledstring.o color.o buttons.o coordinates.o font.o players.o
+OBJS = hexxx.o ledstring.o color.o buttons.o coordinates.o font.o players.o vector.o coordinate.o line.o circle.o buffer.o
 LIBS = ws2811/libws2811.a gpio/gpio.a -lX11
 CPPFLAGS = -std=c++0x -O2
 
@@ -30,6 +30,9 @@ flappybird: $(LIBS) $(OBJS) flappybird.o
 
 dogfight: $(LIBS) $(OBJS) dogfight.o
 	g++ $(CPPFLAGS) -o dogfight dogfight.o $(OBJS) $(LIBS) -pthread
+
+vectors: $(LIBS) $(OBJS) vectors.o
+	g++ $(CPPFLAGS) -o vectors vectors.o $(OBJS) $(LIBS) -pthread
 
 clean:
 	@rm -vf *.o *.a $(TARGETS)
