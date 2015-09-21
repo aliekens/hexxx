@@ -1,4 +1,4 @@
-TARGETS = example tron screengrab fontdemo cube flappybird dogfight circles
+TARGETS = example tron screengrab fontdemo cube flappybird dogfight vectors
 
 all: $(TARGETS)
 
