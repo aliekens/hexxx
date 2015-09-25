@@ -1,4 +1,4 @@
-TARGETS = example tron screengrab fontdemo cube flappybird dogfight vectors bouncing
+TARGETS = example tron screengrab fontdemo cube flappybird dogfight vectors pong
 
 all: $(TARGETS)
 
