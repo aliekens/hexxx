@@ -1,4 +1,4 @@
-TARGETS = example tron screengrab fontdemo cube flappybird dogfight vectors
+TARGETS = example tron screengrab fontdemo cube flappybird dogfight vectors bouncing
 
 all: $(TARGETS)
 
@@ -33,6 +33,9 @@ dogfight: $(LIBS) $(OBJS) dogfight.o
 
 vectors: $(LIBS) $(OBJS) vectors.o
 	g++ $(CPPFLAGS) -o vectors vectors.o $(OBJS) $(LIBS) -pthread
+
+pong: $(LIBS) $(OBJS) pong.o
+	g++ $(CPPFLAGS) -o pong pong.o $(OBJS) $(LIBS) -pthread
 
 clean:
 	@rm -vf *.o *.a $(TARGETS)

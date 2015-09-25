@@ -9,17 +9,35 @@ Coordinate::Coordinate() {
 }
 
 Coordinate::Coordinate( double x, double y ) { 
-  this->x = x; 
-  this->y = y; 
+  this->x = x;
+  this->y = y;
 }
 
 Coordinate Coordinate::operator+( const Vector& vector ) { 
   Coordinate result;
-  result.x = x + cos( vector.angle ) * vector.norm; 
-  result.y = y + sin( vector.angle ) * vector.norm;  
+  result.x = x + cos( vector.angle ) * vector.norm;
+  result.y = y + sin( vector.angle ) * vector.norm;
   return result;
 }
 
+Coordinate Coordinate::operator+( const Coordinate& other ) { 
+  return Coordinate( x + other.x, y + other.y );
+}
+
+Coordinate Coordinate::operator*( const double& d ) { 
+  return Coordinate( x * d, y * d );
+}
+
+Coordinate Coordinate::operator/( const double& d ) { 
+  return Coordinate( x / d, y / d );
+}
+
 void Coordinate::print() { 
-  std::cout << x << "\t" << y << std::endl; 
+  std::cout << x << "\t" << y << std::endl;
+}
+
+double Coordinate::distance( const Coordinate& other ) const {
+  double dx = other.x - x;
+  double dy = other.y - y;
+  return sqrt( dx * dx + dy * dy );
 }

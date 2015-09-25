@@ -101,7 +101,8 @@ void render_thread() {
           framecount = 0;
         }
       #endif
-      usleep(36000); // slow down to about 24FPS on a raspberry pi 2
+      usleep(15000); // slow down to about 50FPS on a raspberry pi 2
+//      usleep(36000); // slow down to about 24FPS on a raspberry pi 2
   }
 }
 

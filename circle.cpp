@@ -34,3 +34,7 @@ void Circle::render( Buffer *buffer, ws2811_led_t color ) {
     }
   }
 }
+
+double Circle::distance( Coordinate other ) {
+  return coordinate.distance( other );
+}

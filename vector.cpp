@@ -10,6 +10,10 @@ Vector::Vector( double angle, double norm ) {
   this->norm = norm; 
 }
 
+Vector Vector::operator*( double factor ) {
+  return Vector( angle, norm * factor );
+}
+
 void Vector::normalize() { 
   norm = 1; 
 }

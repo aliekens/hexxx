@@ -12,6 +12,7 @@ public:
   Circle( Coordinate coordinate, double radius );
   Circle();
   void render( Buffer *buffer, ws2811_led_t color );
+  double distance( Coordinate coordinate );
 };
 
 #endif
