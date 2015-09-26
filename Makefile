@@ -13,8 +13,8 @@ SIMULATOR_OBJECTS = hexxx_simulator.o $(COMMON_OBJECTS)
 HARDWARE_LIBS = ws2811/libws2811.a gpio/gpio.a -lX11
 SIMULATOR_LIBS=`sdl2-config --libs` -lSDL2_gfx
 
-#CPPFLAGS = -std=c++0x -O3
-#CFLAGS = -O3
+CXXFLAGS = -std=c++0x -O3
+CPPFLAGS = -O3
 
 $(HARDWARE_LIBS): force_look
 	cd ws2811 ; make
