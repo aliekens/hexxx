@@ -21,7 +21,7 @@ $(HARDWARE_LIBS): force_look
 	cd gpio ; make
 
 hexxx_simulator.o: hexxx_simulator.cpp
-	g++ `sdl2-config --cflags` -O3 -c -o hexxx_simulator.o hexxx_simulator.cpp
+	g++ `sdl2-config --cflags` $(CXXFLAGS) -c -o hexxx_simulator.o hexxx_simulator.cpp
 
 example: $(HARDWARE_LIBS) $(HARDWARE_OBJECTS) example.o
 	g++ $(CXXFLAGS) -o example example.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
