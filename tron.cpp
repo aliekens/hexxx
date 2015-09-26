@@ -127,7 +127,6 @@ void play_tron(void) {
       setColor( player_position[ 2 ], 0xffffff );
     }
     
-    print_button_states();
     reset_button_states();
   
     // render players on new positions

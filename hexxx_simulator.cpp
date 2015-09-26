@@ -65,66 +65,8 @@ void fillborder( ws2811_led_t color ) {
   }
 }
 
-void button_thread() {
-  
-  while (1) {
-
-    /*
-    set_button_state( 0, gpioRead( BUTTON_0_LEFT_GPIO ) );
-    set_button_state( 1, gpioRead( BUTTON_0_RIGHT_GPIO ) );
-    set_button_state( 2, gpioRead( BUTTON_1_LEFT_GPIO ) );
-    set_button_state( 3, gpioRead( BUTTON_1_RIGHT_GPIO ) );
-    set_button_state( 4, gpioRead( BUTTON_2_LEFT_GPIO ) );
-    set_button_state( 5, gpioRead( BUTTON_2_RIGHT_GPIO ) );
-    */
-    
-    usleep(10000); // 100 samples per second as a simple solution to overcome debouncing
-    
-  }
-}
-
 uint32_t SDLcolor(uint8_t r, uint8_t g, uint8_t b, uint8_t a ) {
   return ((uint32_t)r << 24) | ((uint32_t)g <<  16) | ((uint32_t)b <<  8) | a;
-}
-
-void render_thread() {
-  
-	/* Init SDL */
-	if( SDL_Init( SDL_INIT_TIMER | SDL_INIT_VIDEO ) < 0 ) {
-		std::cerr << "Couldn't initialize SDL: " << SDL_GetError() << std::endl;
-		exit( 1 );
-	}
-	atexit( SDL_Quit );
-  
-	/* Initialize the display */
-	SDL_Window *sdlWindow = SDL_CreateWindow("HEXXX simulator", // SDL2
-	                          SDL_WINDOWPOS_CENTERED,
-	                          SDL_WINDOWPOS_CENTERED,
-	                          400, 400,
-	                          SDL_WINDOW_OPENGL);
-	SDL_Renderer *sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
-
-  while (1) {
-
-		SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
-		SDL_RenderClear(sdlRenderer);
-		for( int i = 0; i < HEXAGON_LED_COUNT; i++ ) {
-      // we'll simulate gamma error of ws2811 LEDs by applying "gamma error" functions which are inverted of gamma correction
-      int red = applyGammaError( getRed( simulated_ledstring[ i ] ) );
-      int green = applyGammaError( getGreen( simulated_ledstring[ i ] ) );
-      int blue = applyGammaError( getBlue( simulated_ledstring[ i ] ) );
-			filledCircleRGBA( 
-        sdlRenderer, 
-        200 - 180 * led2unitx(i), 
-        200 - 180 * led2unity(i),
-        5, // radius
-        red, green, blue, 255 
-      );
-		}
-		SDL_RenderPresent(sdlRenderer);
-		
-    usleep(15000); // slow down to about 50FPS on a raspberry pi 2
-  }
 }
 
 int main(int argc, char *argv[]) {
@@ -134,13 +76,78 @@ int main(int argc, char *argv[]) {
   
   int ret = 0;
 
-  std::thread t1( button_thread );
-  std::thread t2( render_thread );
-  std::thread t3( logic_thread );
-  
-  t1.join();
-  t2.join();
-  t3.join();
+  // only the application runs in a thread, all others don't allow SDL in thread
+  std::thread t1( logic_thread );
+
+  /* Init SDL */
+  if( SDL_Init( SDL_INIT_TIMER | SDL_INIT_VIDEO ) < 0 ) {
+    std::cerr << "Couldn't initialize SDL: " << SDL_GetError() << std::endl;
+    exit( 1 );
+  }
+  atexit( SDL_Quit );
+
+  /* Initialize the display */
+  SDL_Window *sdlWindow = SDL_CreateWindow(
+    "HEXXX simulator", // SDL2
+    SDL_WINDOWPOS_CENTERED,
+    SDL_WINDOWPOS_CENTERED,
+    400, 400,
+    SDL_WINDOW_OPENGL 
+  );
+  SDL_Renderer *sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
+
+  int button_0_left_state = 1;
+  int button_0_right_state = 1;
+  int button_1_left_state = 1;
+  int button_1_right_state = 1;
+  int button_2_left_state = 1;
+  int button_2_right_state = 1;
+
+  while( 1 ) {
+
+    // render HEXXX on screen
+    SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
+    SDL_RenderClear(sdlRenderer);
+    for( int i = 0; i < HEXAGON_LED_COUNT; i++ ) {
+      // we'll simulate gamma error of ws2811 LEDs by applying "gamma error" functions which are inverted of gamma correction
+      int red = applyGammaError( getRed( simulated_ledstring[ i ] ) );
+      int green = applyGammaError( getGreen( simulated_ledstring[ i ] ) );
+      int blue = applyGammaError( getBlue( simulated_ledstring[ i ] ) );
+			filledCircleRGBA( 
+        sdlRenderer, 
+        200 + 180 * led2unitx(i), 
+        200 - 180 * led2unity(i),
+        5, // radius
+        red, green, blue, 255 
+      );
+		}
+		SDL_RenderPresent(sdlRenderer);
+		
+    // check for button presses
+    SDL_Event event;
+    while( SDL_PollEvent( &event ) ) {
+      switch( event.type ) {
+        case SDL_QUIT:
+        	exit(1);
+        break;
+      }
+    }
+    
+    const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+
+    set_button_state( 0, !keystate[ SDL_SCANCODE_V ] );
+    set_button_state( 1, !keystate[ SDL_SCANCODE_B ] );
+    set_button_state( 2, !keystate[ SDL_SCANCODE_O ] );
+    set_button_state( 3, !keystate[ SDL_SCANCODE_P ] );
+    set_button_state( 4, !keystate[ SDL_SCANCODE_Q ] );
+    set_button_state( 5, !keystate[ SDL_SCANCODE_W ] );
+    
+    if( keystate[ SDL_SCANCODE_ESCAPE ] )
+      exit( 1 );
+
+    usleep(15000); // slow down to about 50FPS on a raspberry pi 2
+
+  }
 
   return ret;
   
