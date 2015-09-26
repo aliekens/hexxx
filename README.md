@@ -2,9 +2,11 @@
 
 HEXXX is a DIY 3-player console with a hexagonal grid of 400 RGB LEDs, 6 game buttons, and based on a Raspberry Pi. HEXXX is being built at http://opengarage.org
 
-The repository contains various demos, such as Pong and Tron for three, Flappybird for 6, a X11 screengrabber and a cube demo.
+For development without the hardware, HEXXX applications can be run in a HEXXX simulator on systems that supports building with SDL (Mac, Linux confirmed to work).
 
-It also contains a sample application in `example.cpp` that shows how to build your own HEXXX apps.
+The repository contains various demos, such as Pong and Tron for three, Flappybird for 6, a X11 screengrabber and a cube demo. The sample application in `example.cpp` shows you how to build your own HEXXX apps.
+
+The repository also contains the Inkscape SVG files for laser cutting and constructing your own HEXXX hardware. 
 
 # Prerequisites
 
@@ -50,7 +52,7 @@ to compile the executables to run on the actual hardware. The executables need `
 
 # Simulator
 
-The HEXXX source code comes with a simulator based on SDL. Only `hexxx.cpp` is replaced with a `hexxx_simulator.cpp`. When either `hexxx.o` or `hexxx_simulator.o` is linked with the application object all other objects, the game runs in SDL. 
+The HEXXX source code comes with a simulator based on SDL, on which you can simulate LEDs and button presses. 
 
 Keys are simulated with V,B for player 0, O,P for player 1 and Q, W for player 3.
 
@@ -62,3 +64,4 @@ make simulator
 
 which generates a bunch of `*_simulator` executables.
 
+How it works: The interface (and main loop of the programs) defined in `hexxx.h` is implemented in `hexxx.o` to work on the Raspberry Pi only, because it tracks GPIO for button presses and uses Raspberry Pi-only hardware. The rest of the whole framework is hardware independent. The alternative `hexxx_simulator.cpp` also implements the `hexxx.h` interface, but contains calls to SDL to handle graphics and button presses. Linking your application with `hexxx.o` and hardware-related libraries makes it run on the hardware, while linking with `hexxx_simulator.o` and the SDL library provides us with a simulated version of the HEXXX application.
