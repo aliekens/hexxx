@@ -2,7 +2,7 @@ TARGETS = hardware simulator
 
 all: $(TARGETS)
 
-hardware: example tron screengrab fontdemo cube flappybird vectors pong
+hardware: example tron screengrab fontdemo cube flappybird pong
 
 simulator: example_simulator tron_simulator cube_simulator flappybird_simulator pong_simulator
 

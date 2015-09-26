@@ -8,7 +8,7 @@
 
 #include "buffer.h"
 
-#define PLAYER_SIZE 0.2
+#define PLAYER_SIZE 0.25
 
 // draw circles and lines in the unit coordinate system
 
@@ -207,11 +207,13 @@ void logic_thread() {
     int winner = 0;
     for( int player = 0; player < 3 ; player++ )if( players[ player ].alive ) { winner = player; }
     for( int i = 0; i < 10; i++ ) {
-      Circle circle( players[ winner ].getCoordinate(), PLAYER_SIZE );
-      if( i % 2 )
+      if( i % 2 ) {
+        Circle circle( players[ winner ].getCoordinate(), PLAYER_SIZE );
         circle.render( buffer, players[ winner ].color );
-      else
+      } else { 
+        Circle circle( players[ winner ].getCoordinate(), PLAYER_SIZE * 1.5 );
         circle.render( buffer, 0 );
+      }
       buffer->render();
       usleep(200000);
     }    
