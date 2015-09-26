@@ -61,12 +61,12 @@ Player::Player( int id ) {
 void Player::update() {
   
   if( button_pushed[ leftButton ] ) {
-    position -= 0.025;
+    position -= 0.05;
     if( position < 0.15 )
       position = 0.15;
   }
   if( button_pushed[ rightButton ] ) {
-    position += 0.025;
+    position += 0.05;
     if( position > 0.85 )
       position = 0.85;
   }
