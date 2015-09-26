@@ -18,11 +18,6 @@
 
 extern "C" {
   #include "ledstring.h"
-  
-  #include "ws2811/board_info.h"
-  #include "ws2811/ws2811.h"
-  
-  #include "gpio/gpio.h"
 }
 
 #include "color.h"
