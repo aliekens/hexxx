@@ -19,21 +19,21 @@ void setup_tron(void) {
 int last_turn[PLAYERS] = {0,0,0};
 void randomize_direction_for_player( int player ) {
   if( rand() % 4 < 3 ) {
-    if( last_turn[ PLAYERS ] == 1 ) {
+    if( last_turn[ player ] == 1 ) {
       if( rand() % 4 < 3 ) {
         player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
-        last_turn[ PLAYERS ] = 1;
+        last_turn[ player ] = 1;
       } else {
         player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
-        last_turn[ PLAYERS ] = 2;
+        last_turn[ player ] = 2;
       }
     } else {
       if( rand() % 4 < 3 ) {
         player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
-        last_turn[ PLAYERS ] = 2;
+        last_turn[ player ] = 2;
       } else {
         player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
-        last_turn[ PLAYERS ] = 1;
+        last_turn[ player ] = 1;
       }
     }
   }

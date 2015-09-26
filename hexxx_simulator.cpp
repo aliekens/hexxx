@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
   while( 1 ) {
 
     // render HEXXX on screen
-    SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(sdlRenderer, 64, 64, 64, 255);
     SDL_RenderClear(sdlRenderer);
     for( int i = 0; i < HEXAGON_LED_COUNT; i++ ) {
       // we'll simulate gamma error of ws2811 LEDs by applying "gamma error" functions which are inverted of gamma correction
