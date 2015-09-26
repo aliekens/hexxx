@@ -2,7 +2,7 @@ TARGETS = hardware simulator
 
 all: $(TARGETS)
 
-hardware: example tron screengrab fontdemo cube flappybird vectors pong
+hardware: example tron screengrab fontdemo cube flappybird pong
 
 simulator: example_simulator tron_simulator cube_simulator flappybird_simulator pong_simulator
 
@@ -13,51 +13,51 @@ SIMULATOR_OBJECTS = hexxx_simulator.o $(COMMON_OBJECTS)
 HARDWARE_LIBS = ws2811/libws2811.a gpio/gpio.a -lX11
 SIMULATOR_LIBS=`sdl2-config --libs` -lSDL2_gfx
 
-#CPPFLAGS = -std=c++0x -O3
-#CFLAGS = -O3
+CXXFLAGS = -std=c++0x -O3
+CPPFLAGS = -O3
 
 $(HARDWARE_LIBS): force_look
 	cd ws2811 ; make
 	cd gpio ; make
 
 hexxx_simulator.o: hexxx_simulator.cpp
-	g++ `sdl2-config --cflags` -O3 -c -o hexxx_simulator.o hexxx_simulator.cpp
+	g++ `sdl2-config --cflags` $(CXXFLAGS) -c -o hexxx_simulator.o hexxx_simulator.cpp
 
 example: $(HARDWARE_LIBS) $(HARDWARE_OBJECTS) example.o
-	g++ $(CPPFLAGS) -o example example.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
+	g++ $(CXXFLAGS) -o example example.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
 
 example_simulator: $(SIMULATOR_OBJECTS) example.o
-	g++ $(CPPFLAGS) -o example_simulator example.o $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
+	g++ $(CXXFLAGS) -o example_simulator example.o $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
 
 tron: $(HARDWARE_LIBS) $(HARDWARE_OBJECTS) tron.o
-	g++ $(CPPFLAGS) -o tron tron.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
+	g++ $(CXXFLAGS) -o tron tron.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
 
 tron_simulator: $(SIMULATOR_OBJECTS) tron.o
-	g++ $(CPPFLAGS) -o tron_simulator tron.o $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
+	g++ $(CXXFLAGS) -o tron_simulator tron.o $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
 
 screengrab: $(HARDWARE_LIBS) $(HARDWARE_OBJECTS) screengrab.o
-	g++ $(CPPFLAGS) -o screengrab screengrab.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
+	g++ $(CXXFLAGS) -o screengrab screengrab.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
 
 fontdemo: $(HARDWARE_LIBS) $(HARDWARE_OBJECTS) fontdemo.o
-	g++ $(CPPFLAGS) -o fontdemo fontdemo.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
+	g++ $(CXXFLAGS) -o fontdemo fontdemo.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
 
 cube: $(HARDWARE_LIBS) $(HARDWARE_OBJECTS) cube.o
-	g++ $(CPPFLAGS) -o cube cube.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
+	g++ $(CXXFLAGS) -o cube cube.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
 
 cube_simulator: $(SIMULATOR_OBJECTS) cube.o
-	g++ $(CPPFLAGS) -o cube_simulator cube.o $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
+	g++ $(CXXFLAGS) -o cube_simulator cube.o $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
 
 flappybird: $(HARDWARE_LIBS) $(HARDWARE_OBJECTS) flappybird.o
-	g++ $(CPPFLAGS) -o flappybird flappybird.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
+	g++ $(CXXFLAGS) -o flappybird flappybird.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
 
 flappybird_simulator: $(SIMULATOR_OBJECTS) flappybird.o
-	g++ $(CPPFLAGS) -o flappybird_simulator flappybird.o $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
+	g++ $(CXXFLAGS) -o flappybird_simulator flappybird.o $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
 
 pong: $(HARDWARE_LIBS) $(HARDWARE_OBJECTS) pong.o
-	g++ $(CPPFLAGS) -o pong pong.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
+	g++ $(CXXFLAGS) -o pong pong.o $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
 
 pong_simulator: $(SIMULATOR_OBJECTS) pong.o
-	g++ $(CPPFLAGS) -o pong_simulator pong.o $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
+	g++ $(CXXFLAGS) -o pong_simulator pong.o $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
 
 clean:
 	@rm -vf *.o *.a $(TARGETS)
