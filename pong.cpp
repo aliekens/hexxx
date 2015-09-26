@@ -213,7 +213,7 @@ void logic_thread() {
         Circle circle( players[ winner ].getCoordinate(), PLAYER_SIZE );
         circle.render( buffer, players[ winner ].color );
       } else { 
-        Circle circle( players[ winner ].getCoordinate(), PLAYER_SIZE * 1.5 );
+        Circle circle( players[ winner ].getCoordinate(), PLAYER_SIZE + 1.0/11 );
         circle.render( buffer, 0 );
       }
       buffer->render();
