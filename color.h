@@ -20,11 +20,16 @@ uint8_t getBlue( const ws2811_led_t color );
 
 // GAMMA CORRECTION
 
-extern uint8_t gammaCorrection[256];
+extern uint8_t gammaCorrection[256]; // to correct WS2811 gamma error
+extern uint8_t gammaError[256]; // to simulate WS2811 gamma error
 
 uint8_t applyGammaCorrection( const uint8_t input );
 ws2811_led_t applyGammaCorrection( const ws2811_led_t color );
 ws2811_led_t applyGammaCorrection( const uint8_t red, const uint8_t green, const uint8_t blue );
+
+uint8_t applyGammaError( const uint8_t input );
+ws2811_led_t applyGammaError( const ws2811_led_t color );
+ws2811_led_t applyGammaError( const uint8_t red, const uint8_t green, const uint8_t blue );
 
 ws2811_led_t darkenColor( const ws2811_led_t color, int multiplier = 4, int divisor = 5, int min = 10 );
 ws2811_led_t darkenColor( const ws2811_led_t color, double factor );
