@@ -64,4 +64,12 @@ make simulator
 
 which generates a bunch of `*_simulator` executables.
 
-How it works: The interface (and main loop of the programs) defined in `hexxx.h` is implemented in `hexxx.cpp` to work on the Raspberry Pi only, because it tracks GPIO for button presses and uses Raspberry Pi-only hardware to light the LEDs. The rest of the whole framework is hardware independent. The alternative `hexxx_simulator.cpp` also implements the `hexxx.h` interface, but contains calls to SDL to handle graphics and button presses. Linking your application with `hexxx.o` and hardware-related libraries makes it run on the hardware, while linking with `hexxx_simulator.o` and the SDL library provides us with a simulated version of the HEXXX application.
+## How the simulator works
+
+The interface (and main loop of the programs) defined in `hexxx.h` is implemented in `hexxx.cpp` to work on the Raspberry Pi only, because it tracks GPIO for button presses and uses Raspberry Pi-only hardware to light the LEDs. The rest of the whole framework is hardware independent. 
+
+The alternative `hexxx_simulator.cpp` also implements the `hexxx.h` interface, but contains calls to SDL to handle graphics and button presses. Linking your application with `hexxx.o` and hardware-related libraries makes it run on the hardware, while linking with `hexxx_simulator.o` and the SDL library provides us with a simulated version of the HEXXX application.
+
+## Gamma error
+
+The simulator also support erroneous LED illumination with a faked Gamma error. The library in `color.h` supports Gamma correction, but it needs to be used pro-actively (except when using video buffers as in `buffer.h`, which handles Gamma correction upon copying to the actual screen).
