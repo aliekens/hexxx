@@ -132,21 +132,7 @@ void logic_thread() {
       ball.coordinate = ball.coordinate + ball.vector;
 
       for( int i = 0; i < 6; i++ ) {
-        if( borders[ i ].side( ball.coordinate ) ) { // the ball has crossed the line
-          // reflect the vector with respect to the border
-          ball.coordinate = ball.intersection( borders[ i ] );
-          ball.vector.angle = 2 * borders[ i ].vector.angle - ball.vector.angle;
-          spin *= 0.9;
-          // kill the player to whom the border belongs to
-          if( i == 4 )
-            players[ 0 ].alive = false;
-          if( i == 2 )
-            players[ 1 ].alive = false;
-          if( i == 0 )
-            players[ 2 ].alive = false;
-          borders[ i ].render( buffer, COLOR_WHITE ); // flash wall
-        }
-      
+
         // check if we bounce into a circle
         for( int player = 0; player < 3; player++ ) 
         if( players[ player ].alive ) {
@@ -166,6 +152,22 @@ void logic_thread() {
           }
         }
         
+        // check if we bounce into a border
+        if( borders[ i ].side( ball.coordinate ) ) { // the ball has crossed the line
+          // reflect the vector with respect to the border
+          ball.coordinate = ball.intersection( borders[ i ] );
+          ball.vector.angle = 2 * borders[ i ].vector.angle - ball.vector.angle;
+          spin *= 0.9;
+          // kill the player to whom the border belongs to
+          if( i == 4 )
+            players[ 0 ].alive = false;
+          if( i == 2 )
+            players[ 1 ].alive = false;
+          if( i == 0 )
+            players[ 2 ].alive = false;
+          borders[ i ].render( buffer, COLOR_WHITE ); // flash wall
+        }
+      
       }
       
       // collect button states, move players and reset button states ASAP
