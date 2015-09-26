@@ -14,7 +14,7 @@ HARDWARE_LIBS = ws2811/libws2811.a gpio/gpio.a -lX11
 SIMULATOR_LIBS=`sdl2-config --libs` -lSDL2_gfx
 
 CXXFLAGS = -std=c++0x -O3
-CXXFLAGS = -O3
+CPPFLAGS = -O3
 
 $(HARDWARE_LIBS): force_look
 	cd ws2811 ; make
