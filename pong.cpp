@@ -88,7 +88,7 @@ void logic_thread() {
   Line borders[ 6 ];
   for( int i = 0; i < 6; i++ ) {
     borders[ i ] = Line( 
-      Coordinate( 1.0 * cos( i * TAU / 6 ), 1.0 * sin( i * TAU / 6 ) ), 
+      Coordinate( 1.05 * cos( i * TAU / 6 ), 1.05 * sin( i * TAU / 6 ) ), 
       Vector( ( i + 2 ) * TAU / 6, 1 ) 
     );
   }
