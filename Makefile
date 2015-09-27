@@ -24,6 +24,9 @@ simulator: $(SIMULATOR_APPS)
 %_simulator: %.o $(SIMULATOR_OBJECTS)
 	$(CC) $(CXXFLAGS) -o $@ $< $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
 
+run-%: %
+	./$<
+
 $(HARDWARE_LIBS): force_look
 	cd ws2811 ; make
 	cd gpio ; make
