@@ -9,7 +9,7 @@ bool button_pushed[ 6 ] = { 0, 0, 0, 0, 0, 0 };
 bool button_released[ 6 ] = { 0, 0, 0, 0, 0, 0 };
 
 
-bool set_button_state( int button, bool value ) {
+void set_button_state( int button, bool value ) {
   // HEXXX uses pull-up, so button pushes are inverted
   value = !value;
   // perists various forms of button states, like rising and falling
