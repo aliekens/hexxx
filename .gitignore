@@ -2,3 +2,5 @@
 *.a
 hexxx
 test
+*_simulator
+*_hardware
