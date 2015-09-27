@@ -76,6 +76,9 @@ int main(int argc, char *argv[]) {
   
   int ret = 0;
 
+  // allow apps to perform some initialization
+  logic_init();
+
   // only the application runs in a thread, all others don't allow SDL in thread
   std::thread t1( logic_thread );
 

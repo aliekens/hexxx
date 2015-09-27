@@ -164,6 +164,9 @@ void announce_winner() {
   fillborder( 0 );
 }
 
+// allows for performing initialization
+void logic_init() {}
+
 void logic_thread() {
   while (1) {
     setup_tron();
