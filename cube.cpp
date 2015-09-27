@@ -103,6 +103,9 @@ bool inClockwiseTriangle( int16_t x, int16_t y, int16_t x1, int16_t y1, int16_t 
   return clockwise( x, y, x1, y1, x2, y2 ) && clockwise( x, y, x2, y2, x3, y3 ) && clockwise( x, y, x3, y3, x1, y1 );
 }
 
+// allows for performing initialization
+void logic_init() {}
+
 void logic_thread() {
   while( true ) {
     map3Dto2D();

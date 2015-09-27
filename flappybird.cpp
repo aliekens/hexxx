@@ -27,6 +27,9 @@ void antialiased_polar_pixel( int ring, double angle, int red, int green, int bl
   setColor( polar2led( ring, intled ), applyGammaCorrection( color( ( 1 - realpart ) * red, ( 1 - realpart ) * green, ( 1 - realpart ) * blue ) ) );
 }
 
+// allows for performing initialization
+void logic_init() {}
+
 void logic_thread() {
   
   ws2811_led_t c = COLOR_WHITE;

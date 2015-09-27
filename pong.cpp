@@ -82,6 +82,9 @@ void Player::render( Buffer* buffer, double size ) {
   circle.render( buffer, color );
 }
 
+// allows for performing initialization
+void logic_init() {}
+
 void logic_thread() {
     
   int counter = 0;

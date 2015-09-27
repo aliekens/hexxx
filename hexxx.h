@@ -46,6 +46,7 @@ void fillborder( ws2811_led_t color );
 void button_thread();
 void render_thread();
 extern void logic_thread();
+extern void logic_init();
 
 static void ctrl_c_handler(int signum);
 static void setup_handlers(void);

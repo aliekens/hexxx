@@ -5,6 +5,9 @@ ws2811_led_t randColor() {
   return applyGammaCorrection( color( rand() % 255, rand() % 255, rand() % 255 ) );
 }
 
+// allows for performing initialization
+void logic_init() {}
+
 // a "logic_thread" function always has to be defined in a HEXXX application
 void logic_thread() {
 

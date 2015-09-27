@@ -139,6 +139,9 @@ int main(int argc, char *argv[]) {
 
   std::thread t1( button_thread );
   std::thread t2( render_thread );
+
+  logic_init();
+
   std::thread t3( logic_thread );
   
   t1.join();
