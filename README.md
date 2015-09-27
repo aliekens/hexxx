@@ -20,7 +20,7 @@ X11 is mainly required for the `screengrab` example. Install `libx11-dev` with
 
 For the simulator, you'll need SDL2 (http://libsdl.org) and `SDL_gfx` for SDL2 (https://github.com/thp/SDL_gfx). To check whether you have SDL, run `sdl2-config`, which should be an existing executable.
 
-LibSDL2 can be downloaded from https://www.libsdl.org/download-2.0.php, with binaries for your Mac or Windows development machine
+LibSDL2 can be downloaded from https://www.libsdl.org/download-2.0.php, with binaries for your Mac or Windows development machine. Mind that the binary distribution only includes the runtime framework and not the binaries (e.g. `sdl2-config`). So for development, you will need to grab the sources and compile them.
 
 Note that SDL2 isn't available as an apt package for the Raspberry Pi, so it needs to be compiled from source, which takes quite some time with the Raspberry Pi.
 
