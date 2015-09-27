@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
     while( SDL_PollEvent( &event ) ) {
       switch( event.type ) {
         case SDL_QUIT:
-        	exit(1);
+        	exit(0);
         break;
       }
     }
@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) {
     set_button_state( 5, !keystate[ SDL_SCANCODE_W ] );
     
     if( keystate[ SDL_SCANCODE_ESCAPE ] )
-      exit( 1 );
+      exit( 0 );
 
     usleep(15000); // slow down to about 50FPS on a raspberry pi 2
 
