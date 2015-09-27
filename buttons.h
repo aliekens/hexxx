@@ -8,7 +8,7 @@ extern bool button_falling[ 6 ];
 extern bool button_pushed[ 6 ];
 extern bool button_released[ 6 ];
 
-bool set_button_state( int button, bool value );
+void set_button_state( int button, bool value );
 
 void reset_button_states(); // call this function after checking rising/falling checks to get correct data in next iteration
 
