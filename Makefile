@@ -1,4 +1,4 @@
-APPS 	            = pong example tron screengrab fontdemo cube flappybird pong
+APPS 	            = pong example tron screengrab fontdemo cube flappybird
 HARDWARE_APPS     = $(addsuffix _hardware, $(APPS))
 SIMULATOR_APPS    = $(addsuffix _simulator, $(filter-out screengrab,$(APPS)))
 
@@ -14,6 +14,11 @@ SIMULATOR_OBJECTS = hexxx_simulator.o $(COMMON_OBJECTS)
 HARDWARE_LIBS     = ws2811/libws2811.a gpio/gpio.a -lX11
 SIMULATOR_LIBS    = `sdl2-config --libs` -lSDL2_gfx
 
+UNAME             := $(shell uname -m)
+ifeq ($(UNAME), armv7l)
+EXEC_ENV					= sudo
+endif
+
 all: hardware simulator
 
 hardware: $(HARDWARE_APPS)
@@ -28,6 +33,9 @@ $(HARDWARE_LIBS):
 
 %_hardware: %.o $(HARDWARE_LIBS) $(HARDWARE_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
+
+run-%: %
+	$(EXEC_ENV) ./$<
 
 clean:
 	@rm -vf *.o *.a $(HARDWARE_APPS) $(SIMULATOR_APPS)
