@@ -4,11 +4,11 @@ HEXXX is a DIY 3-player console with a hexagonal grid of 400 RGB LEDs, 6 game bu
 
 Click the image below for a video of our kids playing "Tron for three" on the HEXXX ...
 
-[![Tron for three](http://img.youtube.com/vi/6adhjL02oAc/0.jpg)](http://www.youtube.com/watch?v=6adhjL02oAc)
+<a href="http://www.youtube.com/watch?v=6adhjL02oAc" target="_blank">![Tron for three](http://img.youtube.com/vi/6adhjL02oAc/0.jpg)]</a>
 
 ... or "Pong for three":
 
-[![Pong for three](http://img.youtube.com/vi/Znb7r4-Vf74/0.jpg)](http://www.youtube.com/watch?v=Znb7r4-Vf74)
+<a href="http://www.youtube.com/watch?v=Znb7r4-Vf74" target="_blank">![Tron for three](http://img.youtube.com/vi/Znb7r4-Vf74/0.jpg)]</a>
 
 For development without the hardware, HEXXX applications can be run in a HEXXX simulator on systems that supports building with SDL (http://libsdl.org/ - Mac, Linux confirmed to work).
 
