@@ -14,11 +14,13 @@ For development without the hardware, HEXXX applications can be run in a HEXXX s
 
 The repository contains various demos, such as Pong and Tron for three, Flappybird for 6, a X11 screengrabber and a cube demo. The sample application in `example.cpp` shows you how to build your own HEXXX apps.
 
-The repository also contains the Inkscape SVG files for laser cutting and constructing your own HEXXX hardware. 
+The repository also contains the Inkscape SVG files for laser cutting and [documentation to construct your own HEXXX hardware](http://github.com/aliekens/hexxx/blob/master/util/hardware/README.md). 
 
 ![HEXXX](https://raw.github.com/aliekens/hexxx/master/util/hardware/photo.jpg)
 
-# Prerequisites
+![A view from the side of a HEXXX](https://raw.github.com/aliekens/hexxx/master/util/hardware/side_photo.jpg)
+
+# Software Prerequisites
 
 ## X11
 
