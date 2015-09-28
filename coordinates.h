@@ -30,14 +30,14 @@
 //              |
 
 extern float unit_coordinates_array[397][2];
-float led2unitx( int position );
-float led2unity( int position );
+float led2unitx( int led );
+float led2unity( int led );
 
 // OPTION 2: X and Y coordinates are in [0:255][0:255], with the hexagon centered at ( 127.5, 127.5 )
 
 extern int coordinates_array[397][2];
-int led2bytex( int position );
-int led2bytey( int position );
+int led2bytex( int led );
+int led2bytey( int led );
 
 // LED TO NEIGHBORING LED
 // convert a LED's position to one of its neighbors, using the following direction:
@@ -50,12 +50,12 @@ int led2bytey( int position );
 //   4   5
 
 extern int neighbors_array[397][6];
-int neighbor( int position, int neighbor );
+int neighbor( int led, int neighbor );
 
 // convert a LED to a neighbor, employing edge warping
 
 extern int warping_neighbors_array[397][6];
-int warping_neighbor( int position, int neighbor );
+int warping_neighbor( int led, int neighbor );
 
 // TODO: ROTATE 60DEGREES CLOCKWISE/COUNTERCLOCKWISE
 
@@ -91,7 +91,7 @@ int doublepolar2led( int ring, double angle );
 
 extern int skewed2led_array[23][23];
 int skewed2led( int x, int y ); // returns LED number in [-11:11][-11:11], or -1 if no LED, or -1 if out of range
-int led2skewedx( int position );
-int led2skewedy( int position );
+int led2skewedx( int led );
+int led2skewedy( int led );
 
 #endif
