@@ -24,10 +24,6 @@ coords << [0,0]
   (0..5).each do |triangle|
     x = Math::cos( ( 4 + triangle ) * tau / 6.0 ) * r
     y = Math::sin( ( 4 + triangle ) * tau / 6.0 ) * r
-    if( r == 11 ) # OOPS! bug in layout of the LEDs in physical layout of actual HEXXX machine, fuck, HACK IT in software!
-      x += Math::cos( triangle * tau / 6.0 )
-      y += Math::sin( triangle * tau / 6.0 )
-    end
     coords << [x, y]
     (1..r-1).each do |i|
       x += Math::cos( triangle * tau / 6.0 )
@@ -107,7 +103,7 @@ neighbors.each do |ns|
   neighborsAsStrings << "{" + ns.join(",") + "}"
 end
 
-puts "int neighbors_array[297][6] = { #{neighborsAsStrings.join(", ")} };"
+puts "int neighbors_array[397][6] = { #{neighborsAsStrings.join(", ")} };"
 puts
 
 # WARPING NEIGHBORS
@@ -144,7 +140,7 @@ neighbors.each do |ns|
   neighborsAsStrings << "{" + ns.join(",") + "}"
 end
 
-puts "int warping_neighbors_array[297][6] = { #{neighborsAsStrings.join(", ")} };"
+puts "int warping_neighbors_array[397][6] = { #{neighborsAsStrings.join(", ")} };"
 puts
 
 # HEXXX IN A SKEWED AXIS COORDINATE SYSTEM
