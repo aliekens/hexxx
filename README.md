@@ -8,6 +8,8 @@ The repository contains various demos, such as Pong and Tron for three, Flappybi
 
 The repository also contains the Inkscape SVG files for laser cutting and constructing your own HEXXX hardware. 
 
+![HEXXX](https://raw.github.com/aliekens/hexxx/master/util/hardware/photo.jpg)
+
 # Prerequisites
 
 ## X11
