@@ -24,6 +24,10 @@ all: hardware simulator
 hardware: $(HARDWARE_APPS)
 simulator: $(SIMULATOR_APPS)
 
+run-%: %
+	echo $<
+	$(EXEC_ENV) ./$<
+
 %_simulator: %.o $(SIMULATOR_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(SIMULATOR_OBJECTS) $(SIMULATOR_LIBS) -lpthread
 
@@ -33,9 +37,6 @@ $(HARDWARE_LIBS):
 
 %_hardware: %.o $(HARDWARE_LIBS) $(HARDWARE_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $< $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
-
-run-%: %
-	$(EXEC_ENV) ./$<
 
 clean:
 	@rm -vf *.o *.a $(HARDWARE_APPS) $(SIMULATOR_APPS)
