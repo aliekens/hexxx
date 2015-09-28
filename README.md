@@ -2,6 +2,10 @@
 
 HEXXX is a DIY 3-player console with a hexagonal grid of 400 RGB LEDs, 6 game buttons, and based on a Raspberry Pi. HEXXX is being built at http://opengarage.org
 
+Click the image below for a video of our kids playing "Tron for three" on the HEXXX:
+
+[![HEXXX being played](http://img.youtube.com/vi/6adhjL02oAc/0.jpg)](http://www.youtube.com/watch?v=6adhjL02oAc)
+
 For development without the hardware, HEXXX applications can be run in a HEXXX simulator on systems that supports building with SDL (http://libsdl.org/ - Mac, Linux confirmed to work).
 
 The repository contains various demos, such as Pong and Tron for three, Flappybird for 6, a X11 screengrabber and a cube demo. The sample application in `example.cpp` shows you how to build your own HEXXX apps.
