@@ -1,3 +1,5 @@
+#include <string.h> // memcpy
+
 #include "buffer.h"
 #include "hexxx.h"
 
@@ -31,4 +33,22 @@ void Buffer::render() {
   for( int i = 0; i < HEXAGON_LED_COUNT; i++ ) {
     setColor( i, applyGammaCorrection( buffer[ i ] ) );
   }
+}
+
+void Buffer::rotate(double angle, Buffer* rotated) {
+  // determine for each (rotated) pixel its original color (before rotation)
+  for( int rled = 0; rled < HEXAGON_LED_COUNT; rled++ ) {
+    float rx  = led2unitx( rled ),
+          ry  = led2unity( rled ),
+          x = rx * cos(-angle) - ry * sin(-angle),
+          y = ry * cos(-angle) + rx * sin(-angle);
+    int led = unit2led(x, y);
+    rotated->setPixel(rled, this->getPixel(led));
+  }
+}
+
+void Buffer::rotate(double angle) {
+  Buffer rotated;
+  this->rotate(angle, &rotated);
+  memcpy(this->buffer, rotated.buffer, sizeof(this->buffer));
 }

@@ -32,6 +32,7 @@
 extern float unit_coordinates_array[397][2];
 float led2unitx( int led );
 float led2unity( int led );
+int unit2led( float x, float y);
 
 // OPTION 2: X and Y coordinates are in [0:255][0:255], with the hexagon centered at ( 127.5, 127.5 )
 
