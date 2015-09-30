@@ -1,10 +1,13 @@
 APPS 	            = pong example tron screengrab fontdemo cube flappybird
-HARDWARE_APPS     = $(addsuffix _hardware, $(APPS))
-SIMULATOR_APPS    = $(addsuffix _simulator, $(filter-out screengrab,$(APPS)))
+EXAMPLES					= rotating_buffer
+
+EXAMPLE_APPS			= $(addprefix examples/, $(EXAMPLES))
+HARDWARE_APPS     = $(addsuffix _hardware, $(APPS) $(EXAMPLE_APPS))
+SIMULATOR_APPS    = $(addsuffix _simulator, $(filter-out screengrab,$(APPS)) $(EXAMPLE_APPS))
 
 CXX               = g++
 CC                = gcc
-CXXFLAGS          = -std=c++0x `sdl2-config --cflags`
+CXXFLAGS          = -std=c++0x `sdl2-config --cflags` -I.
 CPPFLAGS          = -O3
 
 COMMON_OBJECTS    = ledstring.o color.o buttons.o coordinates.o font.o players.o vector.o coordinate.o line.o circle.o buffer.o
@@ -25,7 +28,9 @@ hardware: $(HARDWARE_APPS)
 simulator: $(SIMULATOR_APPS)
 
 run-%: %
-	echo $<
+	$(EXEC_ENV) ./$<
+
+run-example-%: examples/%
 	$(EXEC_ENV) ./$<
 
 %_simulator: %.o $(SIMULATOR_OBJECTS)
@@ -39,7 +44,7 @@ $(HARDWARE_LIBS):
 	$(CXX) $(CXXFLAGS) -o $@ $< $(HARDWARE_OBJECTS) $(HARDWARE_LIBS) -pthread
 
 clean:
-	@rm -vf *.o *.a $(HARDWARE_APPS) $(SIMULATOR_APPS)
+	@rm -vf *.o *.a $(HARDWARE_APPS) $(SIMULATOR_APPS) $(EXAMPLE_APPS)
 
 distclean: clean
 	make clean -C ws2811

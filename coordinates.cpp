@@ -21,7 +21,7 @@ int unit2led( float x, float y) {
   for( int led=0; led<HEXAGON_LED_COUNT; led++ ) {
     float lx = led2unitx(led),
           ly = led2unity(led),
-          distance = sqrt( pow(lx - x, 2) + pow(ly - y, 2) );
+          distance = pow(lx - x, 2) + pow(ly - y, 2);
     if( distance < closest_distance) {
       closest_distance = distance;
       closest          = led;

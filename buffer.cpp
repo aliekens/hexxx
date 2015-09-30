@@ -1,3 +1,5 @@
+#include <string.h> // memcpy
+
 #include "buffer.h"
 #include "hexxx.h"
 
@@ -43,4 +45,10 @@ void Buffer::rotate(double angle, Buffer* rotated) {
     int led = unit2led(x, y);
     rotated->setPixel(rled, this->getPixel(led));
   }
+}
+
+void Buffer::rotate(double angle) {
+  Buffer rotated;
+  this->rotate(angle, &rotated);
+  memcpy(this->buffer, rotated.buffer, sizeof(this->buffer));
 }
