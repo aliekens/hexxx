@@ -1,9 +1,8 @@
-APPS 	            = pong example tron screengrab fontdemo cube flappybird
-EXAMPLES					= rotating_buffer
+EXAMPLES					= pong tron example screengrab fontdemo cube flappybird rotating_buffer
 
 EXAMPLE_APPS			= $(addprefix examples/, $(EXAMPLES))
-HARDWARE_APPS     = $(addsuffix _hardware, $(APPS) $(EXAMPLE_APPS))
-SIMULATOR_APPS    = $(addsuffix _simulator, $(filter-out screengrab,$(APPS)) $(EXAMPLE_APPS))
+HARDWARE_APPS     = $(addsuffix _hardware, $(EXAMPLE_APPS))
+SIMULATOR_APPS    = $(addsuffix _simulator, $(filter-out examples/screengrab,$(EXAMPLE_APPS)))
 
 CXX               = g++
 CC                = gcc
