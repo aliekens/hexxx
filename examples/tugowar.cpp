@@ -8,11 +8,11 @@ void logic_thread() {
   
   while (1) {
     
-    int winner = -1;
+    ws2811_led_t winner = 0;
     int position = 0; // start in the center of the hexagon
     
     reset_button_states();
-    while( winner == -1 ) {
+    while( winner == 0 ) {
       
       // players tug the center LED to get it to their homebases
       if( button_rising[ 0 ] )
@@ -36,12 +36,7 @@ void logic_thread() {
         buffer->setPixel( polar2led( 11, 22 + i ), COLOR_GREEN );
         buffer->setPixel( polar2led( 11, 44 + i ), COLOR_BLUE );
       }
-      if( buffer->getPixel( position ) == COLOR_RED )
-        winner = 0;
-      if( buffer->getPixel( position ) == COLOR_BLUE )
-        winner = 1;
-      if( buffer->getPixel( position ) == COLOR_GREEN )
-        winner = 2;
+      winner = buffer->getPixel( position );
       buffer->setPixel( position, c );
       buffer->render();
 
@@ -50,12 +45,7 @@ void logic_thread() {
     }
     
     for( int i = 0; i < 5; i++ ) {
-      if( winner == 0 )
-        buffer->fill( COLOR_RED, 0.5 );
-      if( winner == 1 )
-        buffer->fill( COLOR_BLUE, 0.5 );
-      if( winner == 2 )
-        buffer->fill( COLOR_GREEN, 0.5 );
+      buffer->fill( winner, 0.5 );
       buffer->render();
       usleep(200000);
       buffer->fill( COLOR_BLACK );
