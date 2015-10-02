@@ -13,6 +13,12 @@ void Buffer::fill( ws2811_led_t c ) {
   }
 }
 
+void Buffer::fill( ws2811_led_t c, double alpha ) {
+  for( int i = 0; i < HEXAGON_LED_COUNT; i++ ) {
+    setPixel( i, c, alpha );
+  }
+}
+
 void Buffer::setPixel( int led, ws2811_led_t c ) {
   buffer[ led ] = c;
 }

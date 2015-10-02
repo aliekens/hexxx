@@ -13,6 +13,7 @@ private:
 public:
   Buffer();
   void fill( ws2811_led_t color );
+  void fill( ws2811_led_t color, double alpha );
   ws2811_led_t getPixel( int led );
   void setPixel( int led, ws2811_led_t color );
   void setPixel( int led, ws2811_led_t color, double alpha ); // alpha between 0 and 1
