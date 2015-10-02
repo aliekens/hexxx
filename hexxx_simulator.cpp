@@ -137,10 +137,10 @@ int main(int argc, char *argv[]) {
 
     set_button_state( 0, !keystate[ SDL_SCANCODE_V ] );
     set_button_state( 1, !keystate[ SDL_SCANCODE_B ] );
-    set_button_state( 2, !keystate[ SDL_SCANCODE_O ] );
-    set_button_state( 3, !keystate[ SDL_SCANCODE_P ] );
-    set_button_state( 4, !keystate[ SDL_SCANCODE_Q ] );
-    set_button_state( 5, !keystate[ SDL_SCANCODE_W ] );
+    set_button_state( 2, !keystate[ SDL_SCANCODE_Q ] );
+    set_button_state( 3, !keystate[ SDL_SCANCODE_W ] );
+    set_button_state( 4, !keystate[ SDL_SCANCODE_O ] );
+    set_button_state( 5, !keystate[ SDL_SCANCODE_P ] );
     
     if( keystate[ SDL_SCANCODE_ESCAPE ] )
       exit( 0 );
