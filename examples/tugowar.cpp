@@ -20,13 +20,13 @@ void logic_thread() {
       if( button_rising[ 1 ] )
         position = neighbor( position, 5 );
       if( button_rising[ 2 ] )
-        position = neighbor( position, 0 );
-      if( button_rising[ 3 ] )
-        position = neighbor( position, 1 );
-      if( button_rising[ 4 ] )
         position = neighbor( position, 2 );
-      if( button_rising[ 5 ] )
+      if( button_rising[ 3 ] )
         position = neighbor( position, 3 );
+      if( button_rising[ 4 ] )
+        position = neighbor( position, 0 );
+      if( button_rising[ 5 ] )
+        position = neighbor( position, 1 );
     
       reset_button_states(); // make sure to clear out button states everytime after having handled all of them in the current iteration
     
