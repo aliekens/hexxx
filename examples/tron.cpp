@@ -153,7 +153,7 @@ std::vector< Buffer > play_tron(void) {
     Buffer screenshot;
     screenshot.screenshot();
     replay.push_back( screenshot );
-    if( replay.size() > 10 ) {
+    if( replay.size() > 5 ) {
       replay.erase(replay.begin());
     }
     
@@ -173,7 +173,7 @@ void announce_winner( std::vector< Buffer > replay ) {
       c = player_color[ player ];
     }
   }
-  for( int flash = 0; flash < 10; flash++ ) {
+  for( int flash = 0; flash < 5; flash++ ) {
     for( int f = 0; f < 16; f++ ) {
       fillborder( color( f * getRed(c) / 16, f * getGreen(c) / 16, f * getBlue(c) / 16 ) );
       usleep(5000);
@@ -197,6 +197,6 @@ void logic_thread() {
     invite_players();
     replay = play_tron();
     announce_winner( replay );
-    usleep( 1000000 );
+    usleep( 500000 );
   }
 }
