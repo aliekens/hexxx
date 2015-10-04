@@ -197,6 +197,6 @@ void logic_thread() {
     invite_players();
     replay = play_tron();
     announce_winner( replay );
-    usleep( 500000 );
+    usleep( 1000000 );
   }
 }
