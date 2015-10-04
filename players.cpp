@@ -19,9 +19,9 @@ void invite_players() {
   }
   
   Buffer buffer;
-  Circle player1( Coordinate( 0.8 * cos( 3 * TAU / 4 ), 0.8 * sin( 3 * TAU / 4 ) ), 0.14 );
-  Circle player2( Coordinate( 0.8 * cos( 5 * TAU / 12 ), 0.8 * sin( 5 * TAU / 12 ) ), 0.14 );
-  Circle player3( Coordinate( 0.8 * cos( 1 * TAU / 12 ), 0.8 * sin( 1 * TAU / 12 ) ), 0.14 );
+  Circle player1( Coordinate( 0.8 * cos( 3 * TAU / 4 ), 0.8 * sin( 3 * TAU / 4 ) ), 0.2 );
+  Circle player2( Coordinate( 0.8 * cos( 5 * TAU / 12 ), 0.8 * sin( 5 * TAU / 12 ) ), 0.2 );
+  Circle player3( Coordinate( 0.8 * cos( 1 * TAU / 12 ), 0.8 * sin( 1 * TAU / 12 ) ), 0.2 );
   
   int counter100 = 0;
   int counter = rand() % 1000;

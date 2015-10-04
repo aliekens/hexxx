@@ -19,11 +19,16 @@ void setup_tron(void) {
   player_direction[ 2 ] = 4 - r;
 }
 
+int color_sum( ws2811_led_t c ) {
+  return getRed( c ) + getGreen( c ) + getBlue( c );
+}
+
 int last_turn[PLAYERS] = {0,0,0};
 void randomize_direction_for_player( int player ) {
-  if( rand() % 4 < 3 ) {
+  int direction_before = player_direction[ player ];
+  while( ( direction_before == player_direction[ player ] ) && ( rand() % 5 > 0 ) ) {
     if( last_turn[ player ] == 1 ) {
-      if( rand() % 4 < 3 ) {
+      if( rand() % 3 > 0 ) {
         player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
         last_turn[ player ] = 1;
       } else {
@@ -31,7 +36,7 @@ void randomize_direction_for_player( int player ) {
         last_turn[ player ] = 2;
       }
     } else {
-      if( rand() % 4 < 3 ) {
+      if( rand() % 3 > 0 ) {
         player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
         last_turn[ player ] = 2;
       } else {
@@ -39,40 +44,18 @@ void randomize_direction_for_player( int player ) {
         last_turn[ player ] = 1;
       }
     }
-  }
-}
-
-int color_sum( ws2811_led_t c ) {
-  return getRed( c ) + getGreen( c ) + getBlue( c );
-}
-
-void announce_winner( std::vector< Buffer > replay ) {
-  ws2811_led_t c = 0xffffff;
-  for( int player = 0; player < 3; player++ ) {
-    if( player_alive[ player ] ) {
-      c = player_color[ player ];
+    if( 
+      ( color_sum( getColor( neighbor( player_position[ player ], player_direction[ player ] ) ) ) > 0 ) || 
+      ( color_sum( getColor( neighbor( neighbor( player_position[ player ], player_direction[ player ] ), player_direction[ player ] ) ) ) > 0 )
+    ) {
+      player_direction[ player ] = direction_before;
     }
-  }
-  for( int flash = 0; flash < 10; flash++ ) {
-    for( int f = 0; f < 16; f++ ) {
-      fillborder( color( f * getRed(c) / 16, f * getGreen(c) / 16, f * getBlue(c) / 16 ) );
-      usleep(5000);
-    }
-    for( int f = 16; f > 0; f-- ) {
-      fillborder( color( f * getRed(c) / 16, f * getGreen(c) / 16, f * getBlue(c) / 16 ) );
-      usleep(5000);
-    }
-  }
-  for( std::vector< Buffer >::iterator i = replay.begin(); i != replay.end(); i++ ) {
-    i->render();
-    fillborder( c );
-    usleep(400000);
   }
 }
 
 std::vector< Buffer > play_tron(void) {
   
-  int sleep = 200000;
+  int sleep = 220000;
   
   // render players on initial positions
   for( int player = 0; player < PLAYERS; player++ ) {
@@ -117,22 +100,22 @@ std::vector< Buffer > play_tron(void) {
 
           int next_color = color_sum( getColor( next_position ) );
           int next_next_color = color_sum( getColor( next_next_position ) );
+          int next_next_next_color = color_sum( getColor( next_next_next_position ) );
+          int next_next_next_next_color = color_sum( getColor( next_next_next_next_position ) );
+          int next_next_next_next_next_color = color_sum( getColor( next_next_next_next_next_position ) );
+          int next_next_next_next_next_next_color = color_sum( getColor( next_next_next_next_next_next_position ) );
           
-          if( player_position[ player ] == next_position )
-            randomize_direction_for_player( player );
-          else if( next_position == next_next_position )
-            randomize_direction_for_player( player );
-          else if( next_next_position == next_next_next_position )
-            randomize_direction_for_player( player );
-          else if( next_next_next_position == next_next_next_next_position )
-            randomize_direction_for_player( player );
-          else if( next_next_next_next_position == next_next_next_next_next_position )
-            randomize_direction_for_player( player );
-          else if( next_next_next_next_next_position == next_next_next_next_next_next_position )
-            randomize_direction_for_player( player );
-          else if( next_color > 0 )
+          if( next_color > 0 )
             randomize_direction_for_player( player );
           else if( next_next_color > 0 )
+            randomize_direction_for_player( player );
+          else if( next_next_next_color > 0 )
+            randomize_direction_for_player( player );
+          else if( next_next_next_next_color > 0 )
+            randomize_direction_for_player( player );
+          else if( next_next_next_next_next_color > 0 )
+            randomize_direction_for_player( player );
+          else if( next_next_next_next_next_next_color > 0 )
             randomize_direction_for_player( player );
           else if( rand() % 10 == 0 )
             randomize_direction_for_player( player );
@@ -192,6 +175,30 @@ std::vector< Buffer > play_tron(void) {
   
   return replay;
 
+}
+
+void announce_winner( std::vector< Buffer > replay ) {
+  ws2811_led_t c = 0xffffff;
+  for( int player = 0; player < 3; player++ ) {
+    if( player_alive[ player ] ) {
+      c = player_color[ player ];
+    }
+  }
+  for( int flash = 0; flash < 10; flash++ ) {
+    for( int f = 0; f < 16; f++ ) {
+      fillborder( color( f * getRed(c) / 16, f * getGreen(c) / 16, f * getBlue(c) / 16 ) );
+      usleep(5000);
+    }
+    for( int f = 16; f > 0; f-- ) {
+      fillborder( color( f * getRed(c) / 16, f * getGreen(c) / 16, f * getBlue(c) / 16 ) );
+      usleep(5000);
+    }
+  }
+  for( std::vector< Buffer >::iterator i = replay.begin(); i != replay.end(); i++ ) {
+    i->render();
+    fillborder( c );
+    usleep(400000);
+  }
 }
 
 void logic_thread() {
