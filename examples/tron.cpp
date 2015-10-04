@@ -4,6 +4,8 @@
 
 #include <vector>
 
+#define LOOKUP 6
+          
 int player_direction[PLAYERS];
 
 void setup_tron(void) {
@@ -44,10 +46,10 @@ void randomize_direction_for_player( int player ) {
         last_turn[ player ] = 1;
       }
     }
-    if( 
+    if( ( 
       ( color_sum( getColor( neighbor( player_position[ player ], player_direction[ player ] ) ) ) > 0 ) || 
       ( color_sum( getColor( neighbor( neighbor( player_position[ player ], player_direction[ player ] ), player_direction[ player ] ) ) ) > 0 )
-    ) {
+    ) && ( rand() % 3 == 0 ) ) {
       player_direction[ player ] = direction_before;
     }
   }
@@ -67,8 +69,11 @@ std::vector< Buffer > play_tron(void) {
   
   std::vector< Buffer > replay;
 
+  int counter = 0;
   while( ( player_alive[ 0 ] && player_alive[ 1 ] ) || ( player_alive[ 1 ] && player_alive[ 2 ] ) || ( player_alive[ 0 ] && player_alive[ 2 ] ) ) { // play as long as 2 players are alive
-  
+    
+    counter++;
+    
     // fade out player tails
     darkenhexagon();
     if( rand() % 2 )
@@ -89,35 +94,19 @@ std::vector< Buffer > play_tron(void) {
           if (button_rising[ player * 2 + 1 ] )
             player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
 
-        } else {
+        } else if( counter > 3 ) {
           
+          bool change_direction = false;
           int next_position = neighbor( player_position[ player ], player_direction[ player ] );
-          int next_next_position = neighbor( next_position, player_direction[ player ] );
-          int next_next_next_position = neighbor( next_next_position, player_direction[ player ] );
-          int next_next_next_next_position = neighbor( next_next_next_position, player_direction[ player ] );
-          int next_next_next_next_next_position = neighbor( next_next_next_next_position, player_direction[ player ] );
-          int next_next_next_next_next_next_position = neighbor( next_next_next_next_next_position, player_direction[ player ] );
-
-          int next_color = color_sum( getColor( next_position ) );
-          int next_next_color = color_sum( getColor( next_next_position ) );
-          int next_next_next_color = color_sum( getColor( next_next_next_position ) );
-          int next_next_next_next_color = color_sum( getColor( next_next_next_next_position ) );
-          int next_next_next_next_next_color = color_sum( getColor( next_next_next_next_next_position ) );
-          int next_next_next_next_next_next_color = color_sum( getColor( next_next_next_next_next_next_position ) );
+          for( int i = 0; i < LOOKUP; i++ ) {
+            int next_color = color_sum( getColor( next_position ) );
+            if( color_sum( getColor( next_position ) ) > 0 )
+              change_direction = true;
+            next_position = neighbor( next_position, player_direction[ player ] );
+          }
+          if( rand() % 10 == 0 ) change_direction = true;
           
-          if( next_color > 0 )
-            randomize_direction_for_player( player );
-          else if( next_next_color > 0 )
-            randomize_direction_for_player( player );
-          else if( next_next_next_color > 0 )
-            randomize_direction_for_player( player );
-          else if( next_next_next_next_color > 0 )
-            randomize_direction_for_player( player );
-          else if( next_next_next_next_next_color > 0 )
-            randomize_direction_for_player( player );
-          else if( next_next_next_next_next_next_color > 0 )
-            randomize_direction_for_player( player );
-          else if( rand() % 10 == 0 )
+          if( change_direction )
             randomize_direction_for_player( player );
         }
 
