@@ -64,3 +64,9 @@ void Buffer::darken( double factor ) {
     setPixel( i, darkenColor( getPixel( i ), factor ) );
   }
 }
+
+void Buffer::screenshot() {
+  for( int i = 0; i < HEXAGON_LED_COUNT; i++ ) {
+    setPixel( i, applyGammaError( getColor( i ) ) );
+  }
+}

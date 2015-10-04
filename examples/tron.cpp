@@ -1,5 +1,8 @@
 #include "hexxx.h"
 #include "players.h"
+#include "buffer.h"
+
+#include <vector>
 
 int player_direction[PLAYERS];
 
@@ -43,7 +46,31 @@ int color_sum( ws2811_led_t c ) {
   return getRed( c ) + getGreen( c ) + getBlue( c );
 }
 
-void play_tron(void) {
+void announce_winner( std::vector< Buffer > replay ) {
+  ws2811_led_t c = 0xffffff;
+  for( int player = 0; player < 3; player++ ) {
+    if( player_alive[ player ] ) {
+      c = player_color[ player ];
+    }
+  }
+  for( int flash = 0; flash < 10; flash++ ) {
+    for( int f = 0; f < 16; f++ ) {
+      fillborder( color( f * getRed(c) / 16, f * getGreen(c) / 16, f * getBlue(c) / 16 ) );
+      usleep(5000);
+    }
+    for( int f = 16; f > 0; f-- ) {
+      fillborder( color( f * getRed(c) / 16, f * getGreen(c) / 16, f * getBlue(c) / 16 ) );
+      usleep(5000);
+    }
+  }
+  for( std::vector< Buffer >::iterator i = replay.begin(); i != replay.end(); i++ ) {
+    i->render();
+    fillborder( c );
+    usleep(400000);
+  }
+}
+
+std::vector< Buffer > play_tron(void) {
   
   int sleep = 200000;
   
@@ -54,6 +81,8 @@ void play_tron(void) {
     else
       setColor( player_position[ player ], 0xffffff );
   }
+  
+  std::vector< Buffer > replay;
 
   while( ( player_alive[ 0 ] && player_alive[ 1 ] ) || ( player_alive[ 1 ] && player_alive[ 2 ] ) || ( player_alive[ 0 ] && player_alive[ 2 ] ) ) { // play as long as 2 players are alive
   
@@ -149,39 +178,29 @@ void play_tron(void) {
         setColor( player_position[ player ], 0xffffff );
     }
     
+    Buffer screenshot;
+    screenshot.screenshot();
+    replay.push_back( screenshot );
+    if( replay.size() > 10 ) {
+      replay.erase(replay.begin());
+    }
+    
     usleep( sleep );
     sleep *= 0.99;
   
   }
   
-}
+  return replay;
 
-void announce_winner() {
-  ws2811_led_t c = 0xffffff;
-  for( int player = 0; player < 3; player++ ) {
-    if( player_alive[ player ] ) {
-      c = player_color[ player ];
-    }
-  }
-  for( int flash = 0; flash < 10; flash++ ) {
-    for( int i = 0; i < 16; i++ ) {
-      fillborder( color( i * getRed(c) / 16, i * getGreen(c) / 16, i * getBlue(c) / 16 ) );
-      usleep(5000);
-    }
-    for( int i = 16; i > 0; i-- ) {
-      fillborder( color( i * getRed(c) / 16, i * getGreen(c) / 16, i * getBlue(c) / 16 ) );
-      usleep(5000);
-    }
-  }
-  fillborder( 0 );
 }
 
 void logic_thread() {
+  std::vector< Buffer > replay;
   while (1) {
     setup_tron();
     invite_players();
-    play_tron();
-    announce_winner();
-    usleep(200000);
+    replay = play_tron();
+    announce_winner( replay );
+    usleep( 1000000 );
   }
 }

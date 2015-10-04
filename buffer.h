@@ -17,10 +17,11 @@ public:
   ws2811_led_t getPixel( int led );
   void setPixel( int led, ws2811_led_t color );
   void setPixel( int led, ws2811_led_t color, double alpha ); // alpha between 0 and 1
-  void render();
+  void render(); // applies gamma correction
   void rotate(double angle, Buffer* rotated);
   void rotate(double angle);
   void darken(double factor);
+  void screenshot(); // grab a screenshot of the actual LED screen and apply gamma error
 };
 
 #endif
