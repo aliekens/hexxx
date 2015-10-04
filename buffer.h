@@ -20,6 +20,7 @@ public:
   void render();
   void rotate(double angle, Buffer* rotated);
   void rotate(double angle);
+  void darken(double factor);
 };
 
 #endif

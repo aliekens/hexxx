@@ -8,11 +8,11 @@ void setup_tron(void) {
   player_color[ 1 ] = color( 0, 255, 0 );
   player_color[ 2 ] = color( 0, 0, 255 );
   int r = rand() % 2;
-  player_position[ 0 ] = 335 + r;
+  player_position[ 0 ] = 276;
   player_direction[ 0 ] = 2 - r;
-  player_position[ 1 ] = 335 + 44 + r;
+  player_position[ 1 ] = 276 + 40;
   player_direction[ 1 ] = ( 6 - r ) % 6;
-  player_position[ 2 ] = 335 + 22 + r;
+  player_position[ 2 ] = 276 + 20;
   player_direction[ 2 ] = 4 - r;
 }
 
@@ -47,12 +47,24 @@ void play_tron(void) {
   
   int sleep = 200000;
   
+  // render players on initial positions
+  for( int player = 0; player < PLAYERS; player++ ) {
+    if( player_alive[ player ] )
+      setColor( player_position[ player ], player_color[ player ] );
+    else
+      setColor( player_position[ player ], 0xffffff );
+  }
+
   while( ( player_alive[ 0 ] && player_alive[ 1 ] ) || ( player_alive[ 1 ] && player_alive[ 2 ] ) || ( player_alive[ 0 ] && player_alive[ 2 ] ) ) { // play as long as 2 players are alive
   
     // fade out player tails
     darkenhexagon();
     if( rand() % 2 )
       darkenhexagon();
+    
+    for( int i = 0; i < 66; i++ ) {
+      fillborder( 0x151515 );
+    }
   
     // update players
     for( int player = 0; player < PLAYERS; player++ ) {

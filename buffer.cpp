@@ -58,3 +58,9 @@ void Buffer::rotate(double angle) {
   this->rotate(angle, &rotated);
   memcpy(this->buffer, rotated.buffer, sizeof(this->buffer));
 }
+
+void Buffer::darken( double factor ) {
+  for( int i = 0; i < HEXAGON_LED_COUNT; i++ ) {
+    setPixel( i, darkenColor( getPixel( i ), factor ) );
+  }
+}
