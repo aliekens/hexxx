@@ -8,46 +8,6 @@ bool player_human[PLAYERS] = { false, false, false };
 bool player_alive[PLAYERS] = { false, false, false };
 ws2811_led_t player_color[PLAYERS] = { 0, 0, 0 };
 
-class Particle {
-public:
-  int led;
-  int direction;
-  ws2811_led_t color;
-  Particle() { 
-    led = 0;
-    direction = rand() % 6;
-    switch( rand() % 6 ) {
-      case 0:
-        color = COLOR_RED;
-      break;
-      case 1:
-        color = COLOR_GREEN;
-      break;
-      case 2:
-        color = COLOR_BLUE;
-      break;
-      case 3:
-        color = COLOR_CYAN;
-      break;
-      case 4:
-        color = COLOR_MAGENTA;
-      break;
-      case 5:
-        color = COLOR_YELLOW;
-      break;
-    }
-  }
-  void update() {
-    direction += rand() % 3 - 1;
-    led = warping_neighbor( led, direction );
-  }
-  void render( Buffer* buffer ) {
-    buffer->setPixel( led, color );
-  }
-};
-
-#define NPARTICLES 10
-
 void invite_players() {
   
   reset_button_states();
@@ -62,8 +22,6 @@ void invite_players() {
   Circle player1( Coordinate( 0.8 * cos( 3 * TAU / 4 ), 0.8 * sin( 3 * TAU / 4 ) ), 0.14 );
   Circle player2( Coordinate( 0.8 * cos( 5 * TAU / 12 ), 0.8 * sin( 5 * TAU / 12 ) ), 0.14 );
   Circle player3( Coordinate( 0.8 * cos( 1 * TAU / 12 ), 0.8 * sin( 1 * TAU / 12 ) ), 0.14 );
-  
-  Particle particles[ NPARTICLES ];
   
   int counter100 = 0;
   int counter = rand() % 1000;
