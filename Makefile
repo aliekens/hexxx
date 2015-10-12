@@ -1,4 +1,4 @@
-EXAMPLES					= pong tron example screengrab fontdemo cube flappybird rotating_buffer tugowar
+EXAMPLES					= pong tron tron2 example screengrab fontdemo cube flappybird rotating_buffer tugowar
 
 EXAMPLE_APPS			= $(addprefix examples/, $(EXAMPLES))
 HARDWARE_APPS     = $(addsuffix _hardware, $(EXAMPLE_APPS))
