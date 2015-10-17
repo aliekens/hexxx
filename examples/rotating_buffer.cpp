@@ -16,7 +16,7 @@ void render_border(int border, int ring, ws2811_led_t color, Buffer* buffer) {
   for(int i=0; i<=size; i++) {
     if(border == 5 && i==size) {  // border case
       // last pixel doesn't go to beginning of next ring, but this ring (close)
-      buffer->setPixel(polar2led(ring, 0), color);      
+      buffer->setPixel(polar2led(ring, 0), color);
     } else {
       buffer->setPixel(first_led + i, color);
     }
