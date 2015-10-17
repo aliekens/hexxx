@@ -71,10 +71,10 @@ play_tron(void) {
   std::vector< Buffer > replay;
 
   int counter = 0;
-  while( ( player_alive[ 0 ] && player_alive[ 1 ] ) || ( player_alive[ 1 ] && player_alive[ 2 ] ) || ( player_alive[ 0 ] && player_alive[ 2 ] ) || player_alive[ 1 ]) { // play as long as 2 players are alive
+  while( ( player_alive[ 0 ] && player_alive[ 1 ] ) || ( player_alive[ 1 ] && player_alive[ 2 ] ) || ( player_alive[ 0 ] && player_alive[ 2 ] )) { // play as long as 2 players are alive
     if(updatecounter==0){
         counter++;
-        updatecounter=10;
+        updatecounter=6;
     // fade out player tails
 
     if( rand() % 2 )
@@ -90,16 +90,16 @@ play_tron(void) {
 
         if( player_human[ player ] ) {
 
-          if( button_pushed[ player * 2 ] )
+          if( button_falling[ player * 2 ] )
             player_direction[ player ] = ( player_direction[ player ] + 1 ) % 6;
-          if (button_pushed[ player * 2 + 1 ] )
+          if (button_falling[ player * 2 + 1 ] )
             player_direction[ player ] = ( player_direction[ player ] + 5 ) % 6;
 
 
         } else if( counter > 3 ) {
-            if( button_pushed[ player * 2 ] )
+            if( button_falling[ player * 2 ] )
               player_human[ player ]=true;
-            if (button_pushed[ player * 2 + 1 ] )
+            if (button_falling[ player * 2 + 1 ] )
               player_human[ player ]=true;
 
           bool change_direction = false;
@@ -117,10 +117,8 @@ play_tron(void) {
         }
 
         int next_position = neighbor( player_position[ player ], player_direction[ player ] );
-        if( button_falling[ player * 2 ] && button_falling[ player * 2 + 1 ] ){//jump
-            if( !(rand() % 2) ){
-                next_position = neighbor( next_position, player_direction[ player ] );
-            }
+        if( button_falling[ player * 2 ] && button_falling[ player * 2 + 1 ] && button_pushed[ player * 2 ] && button_pushed[ player * 2 + 1 ] ){//jump
+              next_position = neighbor( next_position, player_direction[ player ] );
         }
         ws2811_led_t next_position_color = getColor( next_position );
         if( ( getRed( next_position_color ) < 20 ) &&  ( getGreen( next_position_color ) < 20 ) && ( getBlue( next_position_color ) < 20 ) )
@@ -158,25 +156,29 @@ play_tron(void) {
     Buffer screenshot;
     screenshot.screenshot();
     replay.push_back( screenshot );
-    if( replay.size() > 5 ) {
+    if( replay.size() > 10 ) {
+      replay.erase(replay.begin());
       replay.erase(replay.begin());
     }
-    
+    sleep = sleep*0.99+1000;
     }
    // usleep( sleep );
 
     // render players on new positions
     for( int player = 0; player < PLAYERS; player++ ) {
       if( player_alive[ player ] )
-        setColor( player_position[ player ], player_color[ player ]/(updatecounter+1) );
+        setColor( player_position[ player ],  color( getRed(player_color[ player ]) / (updatecounter+1), getGreen(player_color[ player ]) / (updatecounter+1), getBlue(player_color[ player ]) / (updatecounter+1) )  );
       else
         setColor( player_position[ player ], 0xffffff );
     }
-    if(updatecounter==5){
+    if(updatecounter==3){
            darkenhexagon();
+           Buffer screenshot;
+           screenshot.screenshot();
+           replay.push_back( screenshot );
     }
-    sleep = sleep*0.99+850+rand()%300;
-    usleep( sleep/10 );
+
+    usleep( sleep/6 );
     updatecounter--;
   }
   
@@ -204,7 +206,7 @@ void announce_winner( std::vector< Buffer > replay ) {
   for( std::vector< Buffer >::iterator i = replay.begin(); i != replay.end(); i++ ) {
     i->render();
     fillborder( c );
-    usleep(400000);
+    usleep(180000);
   }
 }
 
